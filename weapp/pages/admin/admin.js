@@ -15,6 +15,12 @@ Page({
       this.setData({ loggedIn: true, role: data.role, error: '' })
     } catch { this.setData({ error: '用户名或密码错误' }) }
   },
+  goPrinters() {
+    wx.navigateTo({ url: '/pages/printers/printers' })
+  },
+  goMine() {
+    wx.navigateBack({ delta: 1 })
+  },
   logout() {
     wx.removeStorageSync('token'); wx.removeStorageSync('role')
     getApp().globalData.token = ''

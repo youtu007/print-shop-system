@@ -1,30 +1,39 @@
 <view class="page">
   <view class="title">🛍️ 商城</view>
-  <view class="grid">
+
+  <!-- 骨架屏 -->
+  <view wx:if="{{loading}}" class="grid">
+    <view class="skeleton-card" wx:for="{{[1,2,3,4]}}" wx:key="*this">
+      <view class="sk-line sk-name"></view>
+      <view class="sk-line sk-desc"></view>
+      <view class="sk-line sk-price"></view>
+    </view>
+  </view>
+
+  <!-- 商品列表 -->
+  <view wx:else class="grid">
     <view class="card" wx:for="{{products}}" wx:key="id">
       <text class="p-name">{{item.name}}</text>
       <text class="p-desc">{{item.description}}</text>
       <view class="p-bottom">
         <text class="p-price">¥{{item.price}}</text>
-        <button class="add-btn" bindtap="addCart" data-product="{{item}}">+</button>
+        <button class="add-btn" bindtap="tapAdd" data-product="{{item}}">+</button>
       </view>
     </view>
   </view>
-  <view wx:if="{{cart.length}}" class="cart-panel">
-    <text class="cart-title">购物车</text>
-    <view wx:for="{{cart}}" wx:key="id" class="cart-row">
-      <text>{{item.name}} ×{{item.qty}}</text>
-      <text>¥{{item.price * item.qty}}</text>
-    </view>
-    <button wx:if="{{!showForm}}" class="btn" bindtap="checkout">去结算</button>
-    <view wx:else>
-      <input class="input" placeholder="姓名" data-field="name" bindinput="onInput"/>
-      <input class="input" placeholder="手机号" data-field="phone" bindinput="onInput"/>
-      <input class="input" placeholder="地址" data-field="address" bindinput="onInput"/>
-      <button class="btn" bindtap="placeOrder">💳 下单</button>
-    </view>
-  </view>
+
   <view wx:if="{{orderId}}" class="success-bar" bindtap="viewOrder">
-    ✅ 下单成功，查看订单状态 →
+    ✅ 下单成功，点击查看物流状态 →
+  </view>
+
+  <!-- 操作弹窗 -->
+  <view wx:if="{{showActionSheet}}" class="mask" bindtap="closeSheet"></view>
+  <view class="action-sheet {{showActionSheet ? 'action-sheet-show' : ''}}">
+    <view class="sheet-product-info">
+      <text class="sheet-name">{{selectedProduct.name}}</text>
+      <text class="sheet-price">¥{{selectedProduct.price}}</text>
+    </view>
+    <button class="sheet-btn-primary" bindtap="doOrderNow">立即下单</button>
+    <button class="sheet-btn-cancel" bindtap="closeSheet">取消</button>
   </view>
 </view>

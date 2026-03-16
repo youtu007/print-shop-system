@@ -1,18 +1,23 @@
 <view class="page">
-  <view wx:if="{{!loggedIn}}">
-    <view class="login-box">
-      <text class="emoji">🔐</text>
-      <text class="login-title">管理员登录</text>
-      <input class="input" placeholder="用户名" data-field="username" bindinput="onInput"/>
-      <input class="input" type="password" placeholder="密码" data-field="password" bindinput="onInput"/>
-      <button class="btn" bindtap="login">登录</button>
-      <text wx:if="{{error}}" class="error">{{error}}</text>
-      <text class="hint">演示账号：admin / admin123</text>
+  <view class="title">🛠️ 管理后台</view>
+
+  <view wx:if="{{!loggedIn}}" class="login-box">
+    <view class="input-wrap">
+      <input class="input-inner" placeholder="用户名" placeholder-style="color:#bbb;font-size:28rpx;"
+        data-field="username" bindinput="onInput"/>
     </view>
+    <view class="input-wrap">
+      <input class="input-inner" placeholder="密码" placeholder-style="color:#bbb;font-size:28rpx;"
+        type="password" data-field="password" bindinput="onInput"/>
+    </view>
+    <text wx:if="{{error}}" class="error">{{error}}</text>
+    <button class="btn" bindtap="login">登录</button>
+    <text class="hint">演示账号：admin / admin123</text>
   </view>
+
   <view wx:else>
     <text class="welcome">👋 已登录（{{role}}）</text>
-    <text class="tip">完整管理功能请使用网页端后台</text>
+    <button class="nav-btn" bindtap="goPrinters">🖨️ 查看打印机状态</button>
     <button class="logout-btn" bindtap="logout">退出登录</button>
   </view>
 </view>

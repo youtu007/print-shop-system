@@ -1,11 +1,31 @@
 <view class="page">
   <view class="title">🖨️ 打印机状态</view>
-  <view class="card" wx:for="{{printers}}" wx:key="id">
-    <view class="row">
-      <text class="name">{{item.name}}</text>
-      <text class="badge {{item.status}}">{{item.status === 'online' ? '在线' : item.status === 'busy' ? '忙碌' : '离线'}}</text>
+
+  <!-- 骨架屏 -->
+  <view wx:if="{{loading}}">
+    <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+      <view class="sk-line sk-title"></view>
+      <view class="sk-line sk-short"></view>
+      <view class="sk-line sk-short"></view>
     </view>
-    <text class="loc">📍 {{item.location}}</text>
-    <text class="paper">📄 剩余纸张：{{item.paper_remaining}} 张</text>
+  </view>
+
+  <!-- 数据 -->
+  <view wx:else>
+    <view wx:if="{{!printers.length}}" class="empty">暂无可用打印机</view>
+    <view class="card" wx:for="{{printers}}" wx:key="id">
+      <view class="row">
+        <text class="name">{{item.name}}</text>
+        <view class="badge {{item.status}}">{{item.status === 'online' ? '在线' : item.status === 'busy' ? '忙碌' : '离线'}}</view>
+      </view>
+      <text class="loc">📍 {{item.location}}</text>
+      <view class="paper-row">
+        <text class="paper-label">📄 剩余纸张</text>
+        <view class="paper-bar-wrap">
+          <view class="paper-bar" style="width:{{item.paper_remaining/500*100 > 100 ? 100 : item.paper_remaining/500*100}}%"></view>
+        </view>
+        <text class="paper-num">{{item.paper_remaining}} 张</text>
+      </view>
+    </view>
   </view>
 </view>

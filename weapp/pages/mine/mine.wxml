@@ -1,0 +1,46 @@
+<view class="page">
+  <view class="title">👤 我的</view>
+
+  <!-- 我的订单 -->
+  <view class="card">
+    <view class="card-hd">
+      <text class="card-title">我的订单</text>
+      <text class="card-more" bindtap="goAllOrders">全部订单 ›</text>
+    </view>
+    <view class="order-types">
+      <view class="order-type" bindtap="goOrders" data-status="unpaid">
+        <view class="type-icon-wrap">
+          <text class="type-icon">💳</text>
+          <view wx:if="{{counts.unpaid > 0}}" class="badge">{{counts.unpaid}}</view>
+        </view>
+        <text class="type-label">待付款</text>
+      </view>
+      <view class="order-type" bindtap="goOrders" data-status="packing">
+        <view class="type-icon-wrap">
+          <text class="type-icon">📦</text>
+          <view wx:if="{{counts.packing > 0}}" class="badge">{{counts.packing}}</view>
+        </view>
+        <text class="type-label">待发货</text>
+      </view>
+      <view class="order-type" bindtap="goOrders" data-status="shipping">
+        <view class="type-icon-wrap">
+          <text class="type-icon">🚚</text>
+          <view wx:if="{{counts.shipping > 0}}" class="badge">{{counts.shipping}}</view>
+        </view>
+        <text class="type-label">待收货</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 购物车 -->
+  <view class="card cart-card" bindtap="goCart">
+    <text class="cart-icon">🛒</text>
+    <text class="cart-text">查看购物车</text>
+    <text wx:if="{{cartCount > 0}}" class="cart-count">{{cartCount}} 件</text>
+    <text wx:else class="cart-empty">暂无商品</text>
+    <text class="arrow">›</text>
+  </view>
+
+  <!-- 管理员入口 -->
+  <button class="admin-entry-btn" bindtap="goAdmin">🔐 管理员入口</button>
+</view>

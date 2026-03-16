@@ -1,24 +1,231 @@
 <view class="page">
+  <!-- Tab 切换 -->
   <view class="tabs">
-    <view class="tab {{tab==='group'?'active':''}}" bindtap="switchTab" data-tab="group">编组相片</view>
     <view class="tab {{tab==='self'?'active':''}}" bindtap="switchTab" data-tab="self">自助打印</view>
+    <view class="tab {{tab==='group'?'active':''}}" bindtap="switchTab" data-tab="group">编组相片</view>
   </view>
+
+  <!-- ===== 编组相片 ===== -->
   <view wx:if="{{tab==='group'}}">
-    <view wx:if="{{!group}}">
-      <input class="input" placeholder="输入6位编号" value="{{code}}" bindinput="onCodeInput" maxlength="6"/>
-      <button class="btn" bindtap="lookup">🔍 查找相片</button>
-      <text wx:if="{{error}}" class="error">{{error}}</text>
-    </view>
-    <view wx:else>
-      <text class="group-title">{{group.title}}</text>
-      <view class="photo-grid">
-        <image wx:for="{{group.thumbnails || group.images}}" wx:key="*this" src="{{item}}" class="photo" mode="aspectFill"/>
+    <view wx:if="{{!group}}" class="card">
+      <view class="section-title">输入相片编号</view>
+      <view class="input-wrap">
+        <input class="input-inner" placeholder="输入6位编组编号" placeholder-style="color:#bbb;font-size:30rpx;" value="{{code}}" bindinput="onCodeInput" maxlength="6" type="digit"/>
       </view>
-      <button wx:if="{{!group.is_paid}}" class="btn btn-primary" bindtap="pay">💳 立即付款</button>
-      <button wx:else class="btn btn-green" bindtap="download">⬇️ 下载原图</button>
+      <button class="btn btn-primary" bindtap="lookup">查找相片</button>
+      <text wx:if="{{groupError}}" class="error-text">{{groupError}}</text>
+    </view>
+    <view wx:else class="card">
+      <view class="group-header">
+        <text class="group-title">{{group.title}}</text>
+        <view class="badge-paid {{group.is_paid?'paid':'unpaid'}}">{{group.is_paid?'已付款':'未付款'}}</view>
+      </view>
+      <view class="photo-grid">
+        <image wx:for="{{group.thumbnails || group.images}}" wx:key="*this"
+          src="{{item}}" class="photo-thumb" mode="aspectFill"/>
+      </view>
+      <button wx:if="{{!group.is_paid}}" class="btn btn-primary" bindtap="pay">立即付款解锁</button>
+      <button wx:else class="btn btn-green" bindtap="download">下载原图</button>
+      <button class="btn btn-ghost" bindtap="backToSearch">返回搜索</button>
     </view>
   </view>
+
+  <!-- ===== 自助打印 ===== -->
   <view wx:if="{{tab==='self'}}">
-    <text class="hint">自助打印请在网页端完成排版后提交</text>
+
+    <!-- 步骤指示器 -->
+    <view class="steps">
+      <view class="step {{selfStep>=1?'active':''}} {{selfStep>1?'done':''}}">
+        <view class="step-dot">{{selfStep>1?'✓':'1'}}</view>
+        <text class="step-label">选类型</text>
+      </view>
+      <view class="step-line {{selfStep>1?'done':''}}"></view>
+      <view class="step {{selfStep>=2?'active':''}} {{selfStep>2?'done':''}}">
+        <view class="step-dot">{{selfStep>2?'✓':'2'}}</view>
+        <text class="step-label">选文件</text>
+      </view>
+      <view class="step-line {{selfStep>2?'done':''}}"></view>
+      <view class="step {{selfStep>=3?'active':''}} {{selfStep>3?'done':''}}">
+        <view class="step-dot">{{selfStep>3?'✓':'3'}}</view>
+        <text class="step-label">选规格</text>
+      </view>
+      <view class="step-line {{selfStep>3?'done':''}}"></view>
+      <view class="step {{selfStep>=4?'active':''}} {{selfStep>4?'done':''}}">
+        <view class="step-dot">{{selfStep>4?'✓':'4'}}</view>
+        <text class="step-label">确认</text>
+      </view>
+      <view class="step-line {{selfStep>4?'done':''}}"></view>
+      <view class="step {{selfStep>=5?'active':''}}">
+        <view class="step-dot">5</view>
+        <text class="step-label">完成</text>
+      </view>
+    </view>
+
+    <!-- Step 1: 选类型 -->
+    <view wx:if="{{selfStep===1}}" class="card">
+      <view class="section-title">选择打印类型</view>
+      <view class="type-grid">
+        <view class="type-card {{printType==='photo'?'selected':''}}" bindtap="selectType" data-type="photo">
+          <text class="type-icon">🖼️</text>
+          <text class="type-name">打印图片</text>
+          <text class="type-desc">照片、证件照</text>
+        </view>
+        <view class="type-card doc {{printType==='doc'?'selected':''}}" bindtap="selectType" data-type="doc">
+          <text class="type-icon">📄</text>
+          <text class="type-name">打印文件</text>
+          <text class="type-desc">PDF、Word、Excel</text>
+          <!-- 彩印/黑白选项 -->
+          <view class="color-toggle" catchtap="noop">
+            <view class="color-opt {{colorMode==='color'?'color-active':''}}"
+              catchtap="toggleColor" data-mode="color">彩印</view>
+            <view class="color-opt {{colorMode==='bw'?'bw-active':''}}"
+              catchtap="toggleColor" data-mode="bw">黑白</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Step 2: 选照片 / 选文件 -->
+    <view wx:if="{{selfStep===2}}">
+      <view wx:if="{{printType==='photo'}}" class="card">
+        <view class="section-title">选择要打印的照片</view>
+        <view class="upload-area" bindtap="choosePhotos">
+          <text class="upload-icon">🖼️</text>
+          <text class="upload-hint">点击选择照片（最多9张）</text>
+          <text class="upload-sub">支持相册或拍照</text>
+        </view>
+        <button class="btn btn-ghost" bindtap="resetSelf">返回</button>
+      </view>
+      <view wx:else class="card">
+        <view class="section-title">选择要打印的文件</view>
+        <view class="color-bar">
+          <text class="color-bar-label">打印方式</text>
+          <text class="color-bar-val {{colorMode==='color'?'text-coral':'text-gray'}}">
+            {{colorMode==='color'?'🎨 彩印':'⬛ 黑白打印'}}
+          </text>
+        </view>
+        <view class="upload-area doc-area" bindtap="chooseDoc">
+          <text class="upload-icon">📄</text>
+          <text class="upload-hint">点击从聊天记录选择文件</text>
+          <text class="upload-sub">支持 PDF / Word / Excel / PPT</text>
+        </view>
+        <button class="btn btn-ghost" bindtap="resetSelf">返回</button>
+      </view>
+    </view>
+
+    <!-- Step 3: 选规格 + 打印机 -->
+    <view wx:if="{{selfStep===3}}" class="card">
+      <!-- 已选文件摘要 -->
+      <view wx:if="{{printType==='photo'}}" class="photo-preview-row">
+        <image wx:for="{{photos}}" wx:key="index" src="{{item.tempFilePath}}"
+          class="preview-thumb" mode="aspectFill" wx:if="{{index<4}}"/>
+        <view wx:if="{{photos.length>4}}" class="preview-more">+{{photos.length-4}}</view>
+      </view>
+      <view wx:else class="doc-summary">
+        <text class="doc-icon-big">📄</text>
+        <view class="doc-info">
+          <text class="doc-name">{{docFile.name}}</text>
+          <text class="doc-mode {{colorMode==='color'?'text-coral':'text-gray'}}">
+            {{colorMode==='color'?'彩印':'黑白打印'}}
+          </text>
+        </view>
+      </view>
+
+      <view class="field-row" wx:if="{{printType==='photo'}}">
+        <text class="field-label">打印规格</text>
+        <picker range="{{sizes}}" value="{{sizeIndex}}" bindchange="onSizeChange">
+          <view class="picker-val">{{sizes[sizeIndex]}} <text class="picker-arrow">▾</text></view>
+        </picker>
+      </view>
+      <view class="field-row" wx:else>
+        <text class="field-label">纸张规格</text>
+        <picker range="{{['A4','A3']}}" value="0">
+          <view class="picker-val">A4 <text class="picker-arrow">▾</text></view>
+        </picker>
+      </view>
+
+      <view class="field-row">
+        <text class="field-label">打印数量</text>
+        <input class="count-input" type="number" value="{{count}}" bindinput="onCountInput" placeholder="1"/>
+      </view>
+
+      <view class="field-row" wx:if="{{printers.length}}">
+        <text class="field-label">选择打印机</text>
+        <picker range="{{printers}}" range-key="name" value="{{printerIndex}}" bindchange="onPrinterChange">
+          <view class="picker-val">{{printers[printerIndex].name}} <text class="picker-arrow">▾</text></view>
+        </picker>
+      </view>
+      <view wx:else class="no-printer">暂无在线打印机</view>
+
+      <text wx:if="{{selfError}}" class="error-text">{{selfError}}</text>
+      <button class="btn btn-primary" bindtap="goToPreview"
+        disabled="{{uploading || !printers.length}}">
+        {{uploading ? '排版中…' : printType==='photo' ? '生成排版预览' : '下一步'}}
+      </button>
+      <button class="btn btn-ghost" bindtap="resetSelf">重新选择</button>
+    </view>
+
+    <!-- Step 4: 预览/确认 -->
+    <view wx:if="{{selfStep===4}}" class="card">
+      <!-- 照片排版预览 -->
+      <view wx:if="{{printType==='photo'}}">
+        <view class="section-title">排版预览</view>
+        <image src="{{previewUrl}}" class="layout-preview" mode="widthFix"/>
+      </view>
+      <!-- 文件确认信息 -->
+      <view wx:else class="doc-confirm">
+        <text class="confirm-icon">📄</text>
+        <view class="confirm-title">确认打印信息</view>
+      </view>
+
+      <view class="spec-summary">
+        <view class="spec-row">
+          <text class="spec-key">打印类型</text>
+          <text class="spec-val">{{printType==='photo'?'图片':'文件'}}</text>
+        </view>
+        <view class="spec-row" wx:if="{{printType==='doc'}}">
+          <text class="spec-key">文件名</text>
+          <text class="spec-val spec-filename">{{docFile.name}}</text>
+        </view>
+        <view class="spec-row" wx:if="{{printType==='doc'}}">
+          <text class="spec-key">打印方式</text>
+          <text class="spec-val {{colorMode==='color'?'text-coral':'text-gray'}}">
+            {{colorMode==='color'?'彩印':'黑白'}}
+          </text>
+        </view>
+        <view class="spec-row" wx:if="{{printType==='photo'}}">
+          <text class="spec-key">规格</text>
+          <text class="spec-val">{{sizes[sizeIndex]}}</text>
+        </view>
+        <view class="spec-row">
+          <text class="spec-key">数量</text>
+          <text class="spec-val">{{count}} 份</text>
+        </view>
+        <view class="spec-row">
+          <text class="spec-key">打印机</text>
+          <text class="spec-val">{{printers[printerIndex].name}}</text>
+        </view>
+      </view>
+
+      <button class="btn btn-primary" bindtap="submitJob">确认提交打印</button>
+      <button class="btn btn-ghost" bindtap="resetSelf">重新选择</button>
+    </view>
+
+    <!-- Step 5: 完成 -->
+    <view wx:if="{{selfStep===5}}" class="card done-card">
+      <text class="done-icon">🎉</text>
+      <view class="done-title">打印任务已提交</view>
+      <view class="status-row">
+        <text class="status-label">任务状态</text>
+        <view class="status-badge {{jobStatus}}">
+          <text wx:if="{{jobStatus==='pending'}}">等待打印</text>
+          <text wx:if="{{jobStatus==='printing'}}">打印中</text>
+          <text wx:if="{{jobStatus==='done'}}">已完成 ✓</text>
+        </view>
+      </view>
+      <view class="job-id">任务编号：{{jobId}}</view>
+      <button class="btn btn-primary" bindtap="resetSelf">再打一单</button>
+    </view>
+
   </view>
 </view>

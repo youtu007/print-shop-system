@@ -73,7 +73,8 @@ db.exec(`
 
 // Seed demo data if empty
 const adminCount = db.prepare('SELECT COUNT(*) as c FROM admins').get().c;
-if (adminCount === 0) {
+const productCount = db.prepare('SELECT COUNT(*) as c FROM shop_products').get().c;
+if (adminCount === 0 || productCount === 0) {
   const { v4: uuidv4 } = require('uuid');
   const crypto = require('crypto');
   // Use PBKDF2 with random salt: store as "salt:hash"
@@ -88,10 +89,39 @@ if (adminCount === 0) {
   db.prepare(`INSERT INTO printers VALUES (?,?,?,?,?,?)`).run(p3, '打印机-C', '三楼', 'offline', 0, Date.now() - 7200000);
 
   const products = [
-    [uuidv4(), '6寸相片打印', '高清光面相纸，色彩还原真实', 1.5, null],
-    [uuidv4(), 'A4彩色打印', '80g铜版纸，适合文档海报', 0.8, null],
-    [uuidv4(), '证件照套餐', '白底/蓝底/红底，含排版打印', 12.0, null],
-    [uuidv4(), '相册定制', '20页精装相册', 58.0, null],
+    // 基础文印 - A4
+    [uuidv4(), 'A4黑白打印/复印', '单面普通纸', 1.0, null],
+    [uuidv4(), 'A4彩色打印/复印', '单面普通纸', 2.0, null],
+    // 基础文印 - A3
+    [uuidv4(), 'A3黑白打印/复印', '单面普通纸', 2.0, null],
+    [uuidv4(), 'A3彩色打印/复印', '单面普通纸', 4.0, null],
+    // 证件照/小照片
+    [uuidv4(), '6寸光面相片', '拍照+冲印', 8.0, null],
+    [uuidv4(), '证件照电子档', '白底/蓝底/红底', 5.0, null],
+    // 名片
+    [uuidv4(), '名片制作', '铜版纸/哑粉纸，100张/盒', 30.0, null],
+    [uuidv4(), '特种纸名片', '含烫金工艺', 50.0, null],
+    // 装订装帧
+    [uuidv4(), '无线胶装', 'A4≤50页，含皮纹纸封面', 8.0, null],
+    [uuidv4(), '骑马钉装订', 'A4≤20页', 3.0, null],
+    [uuidv4(), '铁圈装订', 'A4，含磨砂片', 15.0, null],
+    [uuidv4(), '硬壳精装', 'A4/A3，含封面设计覆膜', 100.0, null],
+    // 广告物料
+    [uuidv4(), '宣传单页', '157g铜版纸A4/张', 1.5, null],
+    [uuidv4(), '易拉宝', '80×200cm，含支架画面', 100.0, null],
+    [uuidv4(), 'X展架', '60×160cm', 60.0, null],
+    [uuidv4(), '背胶PP写真', '室内展板/㎡', 40.0, null],
+    [uuidv4(), '条幅', '70cm常规/米', 10.0, null],
+    [uuidv4(), '不干胶贴纸', '定制尺寸', 3.0, null],
+    // 工程/特殊品
+    [uuidv4(), 'CAD出图/A1', '白图', 5.0, null],
+    [uuidv4(), 'CAD出图/A0', '白图', 8.0, null],
+    [uuidv4(), '硫酸图打印', 'A1/A0，加急加价30%', 10.0, null],
+    // 增值服务
+    [uuidv4(), '塑封A4', '普通塑封膜', 3.0, null],
+    [uuidv4(), '塑封A3', '普通塑封膜', 5.0, null],
+    [uuidv4(), '文档扫描', '单页/多页', 2.0, null],
+    [uuidv4(), '标书排版制作', '商务标书', 400.0, null],
   ];
   const ins = db.prepare(`INSERT INTO shop_products VALUES (?,?,?,?,?)`);
   products.forEach(p => ins.run(...p));
