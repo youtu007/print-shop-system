@@ -14,15 +14,41 @@
     "backgroundColor": "#FFFBF5"
   },
   "tabBar": {
-    "color": "#999",
+    "color": "#999999",
     "selectedColor": "#FF6B6B",
     "backgroundColor": "#ffffff",
+    "borderStyle": "white",
     "list": [
-      { "pagePath": "pages/index/index", "text": "首页" },
-      { "pagePath": "pages/printers/printers", "text": "打印机" },
-      { "pagePath": "pages/print/print", "text": "打印" },
-      { "pagePath": "pages/shop/shop", "text": "商城" },
-      { "pagePath": "pages/admin/admin", "text": "管理" }
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/icons/home.svg",
+        "selectedIconPath": "assets/icons/home-active.svg"
+      },
+      {
+        "pagePath": "pages/printers/printers",
+        "text": "打印机",
+        "iconPath": "assets/icons/printer.svg",
+        "selectedIconPath": "assets/icons/printer-active.svg"
+      },
+      {
+        "pagePath": "pages/print/print",
+        "text": "打印",
+        "iconPath": "assets/icons/print.svg",
+        "selectedIconPath": "assets/icons/print-active.svg"
+      },
+      {
+        "pagePath": "pages/shop/shop",
+        "text": "商城",
+        "iconPath": "assets/icons/shop.svg",
+        "selectedIconPath": "assets/icons/shop-active.svg"
+      },
+      {
+        "pagePath": "pages/admin/admin",
+        "text": "管理",
+        "iconPath": "assets/icons/admin.svg",
+        "selectedIconPath": "assets/icons/admin-active.svg"
+      }
     ]
   }
 }
