@@ -1,0 +1,24 @@
+<view class="page">
+  <view class="tabs">
+    <view class="tab {{tab==='group'?'active':''}}" bindtap="switchTab" data-tab="group">编组相片</view>
+    <view class="tab {{tab==='self'?'active':''}}" bindtap="switchTab" data-tab="self">自助打印</view>
+  </view>
+  <view wx:if="{{tab==='group'}}">
+    <view wx:if="{{!group}}">
+      <input class="input" placeholder="输入6位编号" value="{{code}}" bindinput="onCodeInput" maxlength="6"/>
+      <button class="btn" bindtap="lookup">🔍 查找相片</button>
+      <text wx:if="{{error}}" class="error">{{error}}</text>
+    </view>
+    <view wx:else>
+      <text class="group-title">{{group.title}}</text>
+      <view class="photo-grid">
+        <image wx:for="{{group.thumbnails || group.images}}" wx:key="*this" src="{{item}}" class="photo" mode="aspectFill"/>
+      </view>
+      <button wx:if="{{!group.is_paid}}" class="btn btn-primary" bindtap="pay">💳 立即付款</button>
+      <button wx:else class="btn btn-green" bindtap="download">⬇️ 下载原图</button>
+    </view>
+  </view>
+  <view wx:if="{{tab==='self'}}">
+    <text class="hint">自助打印请在网页端完成排版后提交</text>
+  </view>
+</view>

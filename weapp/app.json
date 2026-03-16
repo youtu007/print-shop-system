@@ -1,0 +1,28 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/printers/printers",
+    "pages/print/print",
+    "pages/shop/shop",
+    "pages/order/order",
+    "pages/admin/admin"
+  ],
+  "window": {
+    "navigationBarTitleText": "打印小站",
+    "navigationBarBackgroundColor": "#FF6B6B",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#FFFBF5"
+  },
+  "tabBar": {
+    "color": "#999",
+    "selectedColor": "#FF6B6B",
+    "backgroundColor": "#ffffff",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页" },
+      { "pagePath": "pages/printers/printers", "text": "打印机" },
+      { "pagePath": "pages/print/print", "text": "打印" },
+      { "pagePath": "pages/shop/shop", "text": "商城" },
+      { "pagePath": "pages/admin/admin", "text": "管理" }
+    ]
+  }
+}

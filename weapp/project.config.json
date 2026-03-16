@@ -1,0 +1,7 @@
+{
+  "appid": "wx0000000000000000",
+  "projectname": "printer-demo",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "./",
+  "setting": { "urlCheck": false }
+}

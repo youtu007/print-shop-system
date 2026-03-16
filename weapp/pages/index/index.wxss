@@ -1,0 +1,9 @@
+.page { background: #FFFBF5; min-height: 100vh; }
+.hero { text-align: center; padding: 48rpx 32rpx; background: linear-gradient(135deg,#ff6b6b22,#ffd93d22); }
+.hero-emoji { font-size: 96rpx; display: block; }
+.hero-title { font-size: 56rpx; font-weight: 900; color: #FF6B6B; display: block; }
+.hero-sub { font-size: 28rpx; color: #999; display: block; margin-top: 8rpx; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24rpx; padding: 32rpx; }
+.card { background: #fff; border-radius: 24rpx; padding: 40rpx 20rpx; text-align: center; box-shadow: 0 4rpx 20rpx rgba(0,0,0,.08); }
+.icon { font-size: 64rpx; display: block; margin-bottom: 12rpx; }
+.label { font-size: 28rpx; font-weight: 700; }

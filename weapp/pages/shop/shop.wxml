@@ -1,0 +1,30 @@
+<view class="page">
+  <view class="title">🛍️ 商城</view>
+  <view class="grid">
+    <view class="card" wx:for="{{products}}" wx:key="id">
+      <text class="p-name">{{item.name}}</text>
+      <text class="p-desc">{{item.description}}</text>
+      <view class="p-bottom">
+        <text class="p-price">¥{{item.price}}</text>
+        <button class="add-btn" bindtap="addCart" data-product="{{item}}">+</button>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{cart.length}}" class="cart-panel">
+    <text class="cart-title">购物车</text>
+    <view wx:for="{{cart}}" wx:key="id" class="cart-row">
+      <text>{{item.name}} ×{{item.qty}}</text>
+      <text>¥{{item.price * item.qty}}</text>
+    </view>
+    <button wx:if="{{!showForm}}" class="btn" bindtap="checkout">去结算</button>
+    <view wx:else>
+      <input class="input" placeholder="姓名" data-field="name" bindinput="onInput"/>
+      <input class="input" placeholder="手机号" data-field="phone" bindinput="onInput"/>
+      <input class="input" placeholder="地址" data-field="address" bindinput="onInput"/>
+      <button class="btn" bindtap="placeOrder">💳 下单</button>
+    </view>
+  </view>
+  <view wx:if="{{orderId}}" class="success-bar" bindtap="viewOrder">
+    ✅ 下单成功，查看订单状态 →
+  </view>
+</view>
