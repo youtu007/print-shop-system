@@ -1,27 +1,104 @@
-.page { background: #FFFBF5; min-height: 100vh; padding: 24rpx; }
-.title { font-size: 36rpx; font-weight: 800; margin-bottom: 24rpx; }
+.page { background: var(--color-bg-page); min-height: 100vh; padding: 0; }
+
+/* 渐变个人信息头部 */
+.profile-header {
+  background: linear-gradient(135deg, #FF6B6B, #FF8A8A);
+  padding: var(--space-2xl) var(--space-lg) var(--space-xl);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  margin-bottom: var(--space-lg);
+}
+.profile-avatar {
+  width: 80rpx; height: 80rpx; border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: var(--space-sm);
+}
+.profile-title {
+  font-size: var(--font-xl); font-weight: 800;
+  color: var(--color-text-white);
+}
 
 /* 卡片通用 */
-.card { background: #fff; border-radius: 20rpx; padding: 28rpx; margin-bottom: 20rpx; box-shadow: 0 4rpx 16rpx rgba(0,0,0,.06); }
-.card-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28rpx; }
-.card-title { font-size: 30rpx; font-weight: 700; color: #333; }
-.card-more { font-size: 24rpx; color: #bbb; }
+.card {
+  background: var(--color-bg-card); border-radius: var(--radius-md);
+  padding: 28rpx; margin: 0 var(--space-lg) 20rpx;
+  box-shadow: var(--shadow-md);
+}
+.card-hd {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 28rpx;
+}
+.card-title { font-size: var(--font-md); font-weight: 700; color: var(--color-text-primary); }
+.card-more {
+  font-size: var(--font-sm); color: var(--color-text-tertiary);
+  display: flex; align-items: center; gap: var(--space-xs);
+}
 
 /* 订单状态图标行 */
 .order-types { display: flex; justify-content: space-around; }
-.order-type { display: flex; flex-direction: column; align-items: center; gap: 10rpx; }
+.order-type {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 10rpx;
+}
 .type-icon-wrap { position: relative; }
-.type-icon { font-size: 52rpx; }
-.badge { position: absolute; top: -8rpx; right: -12rpx; background: #FF6B6B; color: #fff; font-size: 18rpx; font-weight: 700; min-width: 32rpx; height: 32rpx; border-radius: 99rpx; display: flex; align-items: center; justify-content: center; padding: 0 6rpx; }
-.type-label { font-size: 24rpx; color: #555; }
+.badge {
+  position: absolute; top: -8rpx; right: -12rpx;
+  background: var(--color-primary); color: var(--color-text-white);
+  font-size: 18rpx; font-weight: 700;
+  min-width: 32rpx; height: 32rpx;
+  border-radius: var(--radius-pill);
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 6rpx;
+}
+.type-label { font-size: var(--font-sm); color: var(--color-text-secondary); }
 
 /* 购物车卡片 */
-.cart-card { display: flex; align-items: center; gap: 16rpx; }
-.cart-icon { font-size: 40rpx; }
-.cart-text { font-size: 28rpx; font-weight: 600; color: #333; flex: 1; }
-.cart-count { font-size: 24rpx; color: #FF6B6B; font-weight: 700; }
-.cart-empty { font-size: 24rpx; color: #bbb; }
-.arrow { font-size: 28rpx; color: #ccc; }
+.cart-card {
+  display: flex; align-items: center; gap: var(--space-md);
+  border-left: 6rpx solid var(--color-primary);
+}
+.cart-text {
+  font-size: var(--font-base); font-weight: 600;
+  color: var(--color-text-primary); flex: 1;
+}
+.cart-count {
+  font-size: var(--font-sm); color: var(--color-primary); font-weight: 700;
+}
+.cart-empty { font-size: var(--font-sm); color: var(--color-text-tertiary); }
+
+/* CSS 箭头 */
+.css-arrow {
+  display: inline-block; width: 16rpx; height: 16rpx;
+  border-right: 3rpx solid var(--color-text-tertiary);
+  border-bottom: 3rpx solid var(--color-text-tertiary);
+  transform: rotate(-45deg); flex-shrink: 0;
+}
 
 /* 管理员入口 */
-.admin-entry-btn { background: #fff; color: #bbb; border: 2rpx solid #e0e0e0; border-radius: 16rpx; padding: 22rpx; font-size: 26rpx; width: 100%; margin-top: 8rpx; }
+.admin-entry {
+  margin-top: var(--space-lg);
+  padding-bottom: var(--space-2xl);
+}
+.admin-entry-btn {
+  background: var(--color-bg-card);
+  border: none;
+  padding: 0;
+  margin: 0 var(--space-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+.admin-entry-btn::after { border: none; }
+.admin-entry-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 28rpx;
+}
+.admin-entry-text {
+  flex: 1;
+  font-size: var(--font-base);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}

@@ -1,0 +1,404 @@
+/* ============================================
+   全局设计系统 — 打印小站
+   ============================================ */
+
+/* ---- 设计 Token（CSS 变量） ---- */
+page {
+  --color-primary: #FF6B6B;
+  --color-primary-light: #FF8A8A;
+  --color-primary-dark: #E85D5D;
+  --color-primary-bg: #FFF5F5;
+  --color-success: #10B981;
+  --color-success-bg: #ECFDF5;
+  --color-warning: #F59E0B;
+  --color-warning-bg: #FFFBEB;
+  --color-error: #EF4444;
+  --color-error-bg: #FEF2F2;
+  --color-info: #3B82F6;
+  --color-info-bg: #EFF6FF;
+
+  --color-text-primary: #1F2937;
+  --color-text-secondary: #6B7280;
+  --color-text-tertiary: #9CA3AF;
+  --color-text-white: #FFFFFF;
+
+  --color-bg-page: #FFFBF5;
+  --color-bg-card: #FFFFFF;
+  --color-bg-input: #F3F4F6;
+  --color-border: #F3F4F6;
+
+  /* 字号 7 级 */
+  --font-xs: 22rpx;
+  --font-sm: 24rpx;
+  --font-base: 28rpx;
+  --font-md: 30rpx;
+  --font-lg: 32rpx;
+  --font-xl: 36rpx;
+  --font-2xl: 44rpx;
+
+  /* 圆角 */
+  --radius-sm: 12rpx;
+  --radius-md: 20rpx;
+  --radius-lg: 28rpx;
+  --radius-pill: 999rpx;
+
+  /* 阴影 */
+  --shadow-sm: 0 2rpx 8rpx rgba(0,0,0,0.04);
+  --shadow-md: 0 4rpx 20rpx rgba(0,0,0,0.08);
+  --shadow-lg: 0 8rpx 30rpx rgba(0,0,0,0.12);
+
+  /* 间距 */
+  --space-xs: 8rpx;
+  --space-sm: 12rpx;
+  --space-md: 16rpx;
+  --space-lg: 24rpx;
+  --space-xl: 32rpx;
+  --space-2xl: 48rpx;
+}
+
+/* ---- 通用组件类 ---- */
+
+/* 卡片 */
+.card-base {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow-md);
+}
+
+/* 按钮 */
+.btn-primary-g {
+  display: block; width: 100%; border: none;
+  border-radius: var(--radius-md); padding: var(--space-lg);
+  font-size: var(--font-md); font-weight: 700; text-align: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: var(--color-text-white);
+  box-shadow: 0 4rpx 16rpx rgba(255,107,107,0.3);
+}
+.btn-primary-g[disabled] {
+  background: #ccc; box-shadow: none;
+}
+.btn-primary-g::after { border: none; }
+
+.btn-secondary-g {
+  display: block; width: 100%; border: 2rpx solid var(--color-primary);
+  border-radius: var(--radius-md); padding: var(--space-lg);
+  font-size: var(--font-md); font-weight: 700; text-align: center;
+  background: var(--color-text-white); color: var(--color-primary);
+}
+.btn-secondary-g::after { border: none; }
+
+.btn-ghost-g {
+  display: block; width: 100%; border: none;
+  border-radius: var(--radius-md); padding: var(--space-lg);
+  font-size: var(--font-base); font-weight: 600; text-align: center;
+  background: var(--color-bg-input); color: var(--color-text-secondary);
+}
+.btn-ghost-g::after { border: none; }
+
+/* 徽章 */
+.badge-success {
+  display: inline-flex; align-items: center;
+  padding: 6rpx 16rpx; border-radius: var(--radius-pill);
+  font-size: var(--font-xs); font-weight: 600;
+  background: var(--color-success-bg); color: var(--color-success);
+}
+.badge-warning {
+  display: inline-flex; align-items: center;
+  padding: 6rpx 16rpx; border-radius: var(--radius-pill);
+  font-size: var(--font-xs); font-weight: 600;
+  background: var(--color-warning-bg); color: var(--color-warning);
+}
+.badge-error {
+  display: inline-flex; align-items: center;
+  padding: 6rpx 16rpx; border-radius: var(--radius-pill);
+  font-size: var(--font-xs); font-weight: 600;
+  background: var(--color-error-bg); color: var(--color-error);
+}
+.badge-info {
+  display: inline-flex; align-items: center;
+  padding: 6rpx 16rpx; border-radius: var(--radius-pill);
+  font-size: var(--font-xs); font-weight: 600;
+  background: var(--color-info-bg); color: var(--color-info);
+}
+
+/* 输入框 */
+.input-base {
+  background: var(--color-bg-input); border-radius: var(--radius-md);
+  padding: var(--space-lg); font-size: var(--font-base);
+  color: var(--color-text-primary); border: 2rpx solid transparent;
+  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+}
+.input-base-focus {
+  border-color: var(--color-primary);
+  background: var(--color-text-white);
+  box-shadow: 0 0 0 4rpx rgba(255,107,107,0.1);
+}
+
+/* ---- 动画库 ---- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40rpx); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.6; transform: scale(0.96); }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  40%      { transform: translateY(-12rpx); }
+  60%      { transform: translateY(-4rpx); }
+}
+@keyframes ripple {
+  0%   { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+@keyframes checkPop {
+  0%   { transform: scale(0) rotate(45deg); opacity: 0; }
+  60%  { transform: scale(1.2) rotate(45deg); }
+  100% { transform: scale(1) rotate(45deg); opacity: 1; }
+}
+@keyframes lineGrow {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+/* 工具类 */
+.anim-fade-in  { animation: fadeIn 0.4s ease both; }
+.anim-slide-up { animation: slideUp 0.5s ease both; }
+.anim-scale-in { animation: scaleIn 0.3s ease both; }
+.anim-bounce   { animation: bounce 0.6s ease; }
+
+.anim-delay-1 { animation-delay: 0.05s; }
+.anim-delay-2 { animation-delay: 0.10s; }
+.anim-delay-3 { animation-delay: 0.15s; }
+.anim-delay-4 { animation-delay: 0.20s; }
+.anim-delay-5 { animation-delay: 0.25s; }
+.anim-delay-6 { animation-delay: 0.30s; }
+
+/* ---- CSS 图标系统 ---- */
+
+/* 基础 */
+.css-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  position: relative; flex-shrink: 0;
+}
+.css-icon-sm { width: 32rpx; height: 32rpx; }
+.css-icon-md { width: 48rpx; height: 48rpx; }
+.css-icon-lg { width: 64rpx; height: 64rpx; }
+
+/* 打印机 */
+.icon-print::before {
+  content: ''; position: absolute;
+  width: 60%; height: 36%;
+  border: 3rpx solid currentColor; border-radius: 4rpx;
+  top: 32%;
+}
+.icon-print::after {
+  content: ''; position: absolute;
+  width: 40%; height: 22%;
+  border-left: 2rpx solid currentColor;
+  border-right: 2rpx solid currentColor;
+  border-bottom: 2rpx solid currentColor;
+  bottom: 12%; border-radius: 0 0 3rpx 3rpx;
+}
+
+/* 图片 */
+.icon-photo::before {
+  content: ''; position: absolute;
+  width: 68%; height: 54%;
+  border: 3rpx solid currentColor; border-radius: 4rpx;
+}
+.icon-photo::after {
+  content: ''; position: absolute;
+  width: 16%; height: 16%; background: currentColor;
+  border-radius: 50%; top: 28%; left: 26%;
+}
+
+/* 文件 */
+.icon-doc::before {
+  content: ''; position: absolute;
+  width: 48%; height: 62%;
+  border: 3rpx solid currentColor; border-radius: 3rpx;
+}
+.icon-doc::after {
+  content: ''; position: absolute;
+  width: 26%; height: 3rpx; background: currentColor;
+  box-shadow: 0 8rpx 0 currentColor, 0 16rpx 0 currentColor;
+}
+
+/* 购物袋 */
+.icon-shop::before {
+  content: ''; position: absolute;
+  width: 52%; height: 42%;
+  border: 3rpx solid currentColor;
+  border-radius: 0 0 8rpx 8rpx; bottom: 16%;
+}
+.icon-shop::after {
+  content: ''; position: absolute;
+  width: 28%; height: 18%;
+  border: 3rpx solid currentColor; border-bottom: none;
+  border-radius: 50% 50% 0 0; top: 18%;
+}
+
+/* 购物车 */
+.icon-cart::before {
+  content: ''; position: absolute;
+  width: 52%; height: 30%;
+  border: 3rpx solid currentColor;
+  border-radius: 0 0 8rpx 8rpx; border-top: none;
+  top: 28%; left: 20%;
+}
+.icon-cart::after {
+  content: ''; position: absolute;
+  width: 10rpx; height: 10rpx;
+  background: currentColor; border-radius: 50%;
+  bottom: 14%; left: 30%;
+  box-shadow: 16rpx 0 0 currentColor;
+}
+
+/* 订单 */
+.icon-order::before {
+  content: ''; position: absolute;
+  width: 52%; height: 62%;
+  border: 3rpx solid currentColor; border-radius: 4rpx;
+}
+.icon-order::after {
+  content: ''; position: absolute;
+  width: 24%; height: 3rpx; background: currentColor;
+  box-shadow: 0 10rpx 0 currentColor, 0 20rpx 0 currentColor;
+  top: 28%;
+}
+
+/* 用户 */
+.icon-user::before {
+  content: ''; position: absolute;
+  width: 28%; height: 28%; background: currentColor;
+  border-radius: 50%; top: 14%;
+}
+.icon-user::after {
+  content: ''; position: absolute;
+  width: 52%; height: 28%; background: currentColor;
+  border-radius: 50% 50% 8rpx 8rpx; bottom: 14%;
+}
+
+/* 位置 */
+.icon-location::before {
+  content: ''; position: absolute;
+  width: 40%; height: 50%;
+  border: 3rpx solid currentColor;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg); top: 12%;
+}
+.icon-location::after {
+  content: ''; position: absolute;
+  width: 12%; height: 12%; background: currentColor;
+  border-radius: 50%; top: 28%;
+}
+
+/* 支付卡 */
+.icon-payment::before {
+  content: ''; position: absolute;
+  width: 64%; height: 42%;
+  border: 3rpx solid currentColor; border-radius: 6rpx;
+}
+.icon-payment::after {
+  content: ''; position: absolute;
+  width: 64%; height: 3rpx; background: currentColor; top: 40%;
+}
+
+/* 包裹 */
+.icon-package::before {
+  content: ''; position: absolute;
+  width: 54%; height: 44%;
+  border: 3rpx solid currentColor; border-radius: 4rpx;
+}
+.icon-package::after {
+  content: ''; position: absolute;
+  width: 0; height: 44%;
+  border-left: 3rpx solid currentColor;
+}
+
+/* 货车 */
+.icon-truck::before {
+  content: ''; position: absolute;
+  width: 42%; height: 30%;
+  border: 3rpx solid currentColor; border-radius: 3rpx;
+  left: 14%; top: 30%;
+}
+.icon-truck::after {
+  content: ''; position: absolute;
+  width: 20%; height: 24%;
+  border: 3rpx solid currentColor;
+  border-radius: 0 5rpx 5rpx 0; border-left: none;
+  right: 18%; top: 36%;
+}
+
+/* 锁 */
+.icon-lock::before {
+  content: ''; position: absolute;
+  width: 44%; height: 34%;
+  border: 3rpx solid currentColor; border-radius: 4rpx;
+  bottom: 18%;
+}
+.icon-lock::after {
+  content: ''; position: absolute;
+  width: 26%; height: 20%;
+  border: 3rpx solid currentColor; border-bottom: none;
+  border-radius: 50% 50% 0 0; top: 22%;
+}
+
+/* 勾选（完成动画） */
+.icon-check-anim {
+  display: inline-flex; align-items: center; justify-content: center;
+  position: relative; color: var(--color-success);
+}
+.icon-check-anim::after {
+  content: ''; display: block;
+  width: 24%; height: 48%;
+  border-right: 4rpx solid currentColor;
+  border-bottom: 4rpx solid currentColor;
+  animation: checkPop 0.5s ease both;
+  transform-origin: center center;
+  margin-left: 2rpx;
+}
+
+/* 带圆形背景的图标容器 */
+.icon-circle-wrap {
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--color-primary-bg); color: var(--color-primary);
+}
+.icon-circle-wrap.success { background: var(--color-success-bg); color: var(--color-success); }
+.icon-circle-wrap.warning { background: var(--color-warning-bg); color: var(--color-warning); }
+.icon-circle-wrap.error   { background: var(--color-error-bg);   color: var(--color-error); }
+.icon-circle-wrap.info    { background: var(--color-info-bg);    color: var(--color-info); }
+
+.icon-circle-sm { width: 64rpx;  height: 64rpx; }
+.icon-circle-md { width: 80rpx;  height: 80rpx; }
+.icon-circle-lg { width: 104rpx; height: 104rpx; }
+
+/* 脉冲绿点（在线状态） */
+.pulse-dot {
+  width: 16rpx; height: 16rpx;
+  border-radius: 50%; background: var(--color-success);
+  position: relative; display: inline-block;
+}
+.pulse-dot::after {
+  content: ''; position: absolute; top: -4rpx; right: -4rpx; bottom: -4rpx; left: -4rpx;
+  border-radius: 50%; border: 2rpx solid var(--color-success);
+  opacity: 0.4;
+}

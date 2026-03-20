@@ -1,0 +1,139 @@
+.page {
+  min-height: 100vh;
+  background: var(--color-bg-page);
+  padding: var(--space-lg);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+
+.page-title {
+  font-size: var(--font-xl);
+  font-weight: 800;
+}
+
+.btn-add {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: 12rpx 24rpx;
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+}
+
+.loading, .empty-tip {
+  text-align: center;
+  padding: 120rpx;
+  color: var(--color-text-tertiary);
+}
+
+.printer-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.printer-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.printer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.printer-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.pulse-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: var(--color-text-tertiary);
+}
+
+.pulse-dot.online {
+  background: var(--color-success);
+}
+
+.pulse-dot.busy {
+  background: var(--color-warning);
+}
+
+.status-text {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.printer-actions {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.action-btn {
+  font-size: var(--font-sm);
+  color: var(--color-primary);
+  padding: 4rpx 8rpx;
+}
+
+.action-btn.delete {
+  color: var(--color-error);
+}
+
+.printer-name {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.printer-location {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-lg);
+}
+
+.printer-paper {
+  background: var(--color-bg-input);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.paper-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.paper-bar {
+  height: 8rpx;
+  background: var(--color-border);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.paper-fill {
+  height: 100%;
+  background: var(--color-success);
+  border-radius: var(--radius-pill);
+}
+
+.printer-footer {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}

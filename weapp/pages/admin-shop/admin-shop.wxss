@@ -1,0 +1,235 @@
+.page {
+  min-height: 100vh;
+  background: var(--color-bg-page);
+  padding: var(--space-lg);
+}
+
+.tab-bar {
+  display: flex;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: 8rpx;
+  margin-bottom: var(--space-lg);
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-base);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.tab-item.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.page-header {
+  margin-bottom: var(--space-lg);
+}
+
+.btn-add {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: 12rpx 24rpx;
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+}
+
+.form-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.field {
+  margin-bottom: var(--space-lg);
+}
+
+.field-row {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.field-row .field {
+  flex: 1;
+}
+
+.field-label {
+  display: block;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.input-base {
+  background: var(--color-bg-input);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  font-size: var(--font-base);
+}
+
+.btn-submit {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-base);
+  font-weight: 600;
+}
+
+.loading, .empty-tip {
+  text-align: center;
+  padding: 120rpx;
+  color: var(--color-text-tertiary);
+}
+
+.product-list, .order-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.product-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: space-between;
+}
+
+.product-info {
+  flex: 1;
+}
+
+.product-name {
+  font-weight: 600;
+  font-size: var(--font-base);
+}
+
+.product-desc {
+  font-size: var(--font-sm);
+  color: var(--color-text-tertiary);
+  margin: var(--space-xs) 0;
+}
+
+.product-price {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.product-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.action-btn {
+  font-size: var(--font-sm);
+  color: var(--color-primary);
+}
+
+.action-btn.delete {
+  color: var(--color-error);
+}
+
+.order-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.order-id {
+  font-family: monospace;
+  font-size: var(--font-sm);
+  color: var(--color-primary);
+}
+
+.order-status {
+  font-size: var(--font-sm);
+  color: var(--color-warning);
+}
+
+.order-status.paid {
+  color: var(--color-success);
+}
+
+.delivery-status {
+  margin-top: 8rpx;
+}
+
+.status-tag {
+  display: inline-block;
+  padding: 4rpx 12rpx;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-xs);
+  font-weight: 600;
+}
+
+.status-tag.packing { background: var(--color-info-bg); color: var(--color-info); }
+.status-tag.shipping { background: var(--color-warning-bg); color: var(--color-warning); }
+.status-tag.delivered { background: var(--color-success-bg); color: var(--color-success); }
+
+.order-items {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-total {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* 轮播图 */
+.banner-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.banner-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-sm);
+}
+.banner-thumb {
+  width: 160rpx;
+  height: 80rpx;
+  border-radius: var(--radius-sm);
+}
+.banner-info {
+  flex: 1;
+}
+.banner-sort {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+.banner-actions {
+  display: flex;
+  gap: var(--space-sm);
+}

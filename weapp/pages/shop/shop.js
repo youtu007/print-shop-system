@@ -16,6 +16,19 @@ Page({
   closeSheet() {
     this.setData({ showActionSheet: false, selectedProduct: null })
   },
+  addToCart() {
+    const p = this.data.selectedProduct
+    const cart = getApp().globalData.cart || []
+    const idx = cart.findIndex(i => i.id === p.id)
+    if (idx >= 0) {
+      cart[idx].qty += 1
+    } else {
+      cart.push({ ...p, qty: 1 })
+    }
+    getApp().globalData.cart = cart
+    this.setData({ showActionSheet: false, selectedProduct: null })
+    wx.showToast({ title: '已加入购物车', icon: 'success' })
+  },
   doOrderNow() {
     const p = this.data.selectedProduct
     getApp().globalData.pendingItems = [{ ...p, qty: 1 }]

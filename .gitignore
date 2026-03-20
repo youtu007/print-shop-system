@@ -1,0 +1,7 @@
+node_modules/
+data.db
+uploads/
+.DS_Store
+*.log
+web-admin/dist/
+weapp/project.private.config.json

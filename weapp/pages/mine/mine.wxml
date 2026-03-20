@@ -1,46 +1,66 @@
 <view class="page">
-  <view class="title">👤 我的</view>
+  <!-- 渐变个人信息头部 -->
+  <view class="profile-header">
+    <view class="profile-avatar">
+      <view class="css-icon css-icon-lg icon-user" style="color:#fff"></view>
+    </view>
+    <text class="profile-title">我的</text>
+  </view>
 
   <!-- 我的订单 -->
-  <view class="card">
+  <view class="card anim-slide-up anim-delay-1">
     <view class="card-hd">
       <text class="card-title">我的订单</text>
-      <text class="card-more" bindtap="goAllOrders">全部订单 ›</text>
+      <text class="card-more" bindtap="goAllOrders">全部订单 <text class="css-arrow"></text></text>
     </view>
     <view class="order-types">
-      <view class="order-type" bindtap="goOrders" data-status="unpaid">
-        <view class="type-icon-wrap">
-          <text class="type-icon">💳</text>
-          <view wx:if="{{counts.unpaid > 0}}" class="badge">{{counts.unpaid}}</view>
-        </view>
-        <text class="type-label">待付款</text>
-      </view>
       <view class="order-type" bindtap="goOrders" data-status="packing">
         <view class="type-icon-wrap">
-          <text class="type-icon">📦</text>
+          <view class="icon-circle-wrap icon-circle-sm">
+            <view class="css-icon css-icon-sm icon-package"></view>
+          </view>
           <view wx:if="{{counts.packing > 0}}" class="badge">{{counts.packing}}</view>
         </view>
         <text class="type-label">待发货</text>
       </view>
       <view class="order-type" bindtap="goOrders" data-status="shipping">
         <view class="type-icon-wrap">
-          <text class="type-icon">🚚</text>
+          <view class="icon-circle-wrap icon-circle-sm">
+            <view class="css-icon css-icon-sm icon-truck"></view>
+          </view>
           <view wx:if="{{counts.shipping > 0}}" class="badge">{{counts.shipping}}</view>
         </view>
-        <text class="type-label">待收货</text>
+        <text class="type-label">配送中</text>
+      </view>
+      <view class="order-type" bindtap="goOrders" data-status="delivered">
+        <view class="type-icon-wrap">
+          <view class="icon-circle-wrap icon-circle-sm">
+            <view class="css-icon css-icon-sm icon-package"></view>
+          </view>
+          <view wx:if="{{counts.delivered > 0}}" class="badge">{{counts.delivered}}</view>
+        </view>
+        <text class="type-label">已收货</text>
       </view>
     </view>
   </view>
 
   <!-- 购物车 -->
-  <view class="card cart-card" bindtap="goCart">
-    <text class="cart-icon">🛒</text>
+  <view class="card cart-card anim-slide-up anim-delay-2" bindtap="goCart">
+    <view class="css-icon css-icon-md icon-cart" style="color:var(--color-primary)"></view>
     <text class="cart-text">查看购物车</text>
     <text wx:if="{{cartCount > 0}}" class="cart-count">{{cartCount}} 件</text>
     <text wx:else class="cart-empty">暂无商品</text>
-    <text class="arrow">›</text>
+    <view class="css-arrow"></view>
   </view>
 
   <!-- 管理员入口 -->
-  <button class="admin-entry-btn" bindtap="goAdmin">🔐 管理员入口</button>
+  <view class="admin-entry anim-slide-up anim-delay-3">
+    <button class="admin-entry-btn" bindtap="goAdminLogin">
+      <view class="admin-entry-content">
+        <view class="css-icon css-icon-md icon-lock" style="color:var(--color-warning)"></view>
+        <text class="admin-entry-text">管理员入口</text>
+        <view class="css-arrow"></view>
+      </view>
+    </button>
+  </view>
 </view>

@@ -22,13 +22,18 @@ Page({
   async loadOrders(filter) {
     const saved = wx.getStorageSync('my_orders') || []
     if (!saved.length) { this.setData({ loading: false }); return }
-    const results = await Promise.all(
-      saved.map(id => api.get(`/api/shop/orders/${id}`, false).catch(() => null))
-    )
-    let orders = results.filter(Boolean)
+    // 批量获取订单，一次请求
+    let orders = []
+    try {
+      orders = await api.get(`/api/shop/orders/batch?ids=${saved.join(',')}`, false)
+    } catch {
+      orders = []
+    }
+    if (!orders) orders = []
     if (filter === 'unpaid')  orders = orders.filter(o => !o.is_paid)
     else if (filter === 'packing')  orders = orders.filter(o => o.is_paid && o.delivery_status === 'packing')
     else if (filter === 'shipping') orders = orders.filter(o => o.delivery_status === 'shipping')
+    else if (filter === 'delivered') orders = orders.filter(o => o.delivery_status === 'delivered')
 
     this.setData({
       loading: false,
@@ -44,5 +49,26 @@ Page({
         }
       })
     })
+  },
+
+  async confirmReceive(e) {
+    const id = e.currentTarget.dataset.id
+    wx.showLoading({ title: '确认中...' })
+    try {
+      await api.post(`/api/shop/orders/${id}/confirm`)
+      wx.showToast({ title: '已确认收货', icon: 'success' })
+      // 刷新列表
+      await this.loadOrders(this.data.filter)
+      // 刷新我的页面角标
+      const pages = getCurrentPages()
+      const minePage = pages.find(p => p.route.includes('mine/mine'))
+      if (minePage) {
+        minePage.loadCounts()
+      }
+    } catch (err) {
+      wx.showToast({ title: err.error || '操作失败', icon: 'none' })
+    } finally {
+      wx.hideLoading()
+    }
   }
 })

@@ -1,9 +1,11 @@
 <view class="page">
   <!-- 空购物车 -->
   <view wx:if="{{items.length === 0}}" class="empty">
-    <text class="empty-icon">🛒</text>
+    <view class="empty-icon-wrap">
+      <view class="css-icon css-icon-lg icon-cart" style="color:var(--color-primary)"></view>
+    </view>
     <text class="empty-text">购物车空空如也</text>
-    <button class="go-shop-btn" bindtap="goShop">去逛逛</button>
+    <button class="go-shop-btn btn-primary-g" bindtap="goShop">去逛逛</button>
   </view>
 
   <!-- 商品列表 -->
@@ -21,9 +23,9 @@
           <text class="item-price">¥{{item.price}}</text>
           <view class="item-bottom">
             <view class="qty-row">
-              <button class="qty-btn" bindtap="decrease" data-index="{{index}}">-</button>
+              <button class="qty-btn" hover-class="qty-btn-active" bindtap="decrease" data-index="{{index}}">-</button>
               <text class="qty-num">{{item.qty}}</text>
-              <button class="qty-btn" bindtap="increase" data-index="{{index}}">+</button>
+              <button class="qty-btn" hover-class="qty-btn-active" bindtap="increase" data-index="{{index}}">+</button>
             </view>
             <text class="item-subtotal">¥{{item.subtotal}}</text>
           </view>

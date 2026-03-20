@@ -1,0 +1,116 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  padding: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.login-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.login-title {
+  font-size: var(--font-xl);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin-top: var(--space-lg);
+}
+
+.login-sub {
+  font-size: var(--font-sm);
+  color: var(--color-text-tertiary);
+  margin-top: var(--space-xs);
+}
+
+.field {
+  margin-bottom: var(--space-lg);
+}
+
+.field-label {
+  display: block;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.input-base {
+  background: var(--color-bg-input);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  font-size: var(--font-base);
+  color: var(--color-text-primary);
+  border: 2rpx solid transparent;
+}
+
+.btn-primary-g {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  font-size: var(--font-md);
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: var(--color-text-white);
+  box-shadow: 0 4rpx 16rpx rgba(255,107,107,0.3);
+}
+
+.btn-primary-g[disabled] {
+  background: #ccc;
+  box-shadow: none;
+}
+
+.error-tip {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+  text-align: center;
+}
+
+.demo-tip {
+  margin-top: var(--space-xl);
+  padding: var(--space-xl);
+  background: rgba(255,255,255,0.9);
+  border-radius: var(--radius-lg);
+}
+
+.demo-title {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  display: block;
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+.demo-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-xs) 0;
+  font-size: var(--font-sm);
+}
+
+.demo-label {
+  color: var(--color-text-tertiary);
+}
+
+.demo-val {
+  color: var(--color-text-primary);
+  font-family: monospace;
+}

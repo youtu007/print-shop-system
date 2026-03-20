@@ -1,6 +1,6 @@
 <view class="page">
-  <view class="section-title">商品信息</view>
-  <view class="product-card">
+  <view class="section-title anim-slide-up anim-delay-1"><view class="section-dot"></view>商品信息</view>
+  <view class="product-card anim-slide-up anim-delay-2">
     <view class="prod-row" wx:for="{{items}}" wx:key="id">
       <view class="prod-main">
         <text class="prod-name">{{item.name}}</text>
@@ -17,8 +17,8 @@
     </view>
   </view>
 
-  <view class="section-title">收货信息</view>
-  <view class="form-card">
+  <view class="section-title anim-slide-up anim-delay-3"><view class="section-dot"></view>收货信息</view>
+  <view class="form-card anim-slide-up anim-delay-4">
     <view class="field-row">
       <text class="field-label">姓名</text>
       <view class="input-wrap">
@@ -41,11 +41,29 @@
     </view>
   </view>
 
-  <view class="footer">
+  <view class="footer anim-fade-in">
     <view class="footer-total">
       <text class="footer-label">合计</text>
       <text class="footer-price">¥{{totalPrice}}</text>
     </view>
-    <button class="submit-btn" bindtap="placeOrder">确认下单</button>
+    <button class="submit-btn" bindtap="placeOrder">提交订单</button>
+  </view>
+
+  <!-- ===== 支付弹窗 ===== -->
+  <view class="pay-mask" wx:if="{{showPayPopup}}" bindtap="closePayPopup"></view>
+  <view class="pay-popup {{showPayPopup ? 'show' : ''}}">
+    <view class="pay-card">
+      <view class="pay-close" bindtap="closePayPopup">✕</view>
+      <view class="pay-title">确认支付</view>
+      <view class="pay-placeholder">
+        <image src="/assets/pay-placeholder.svg" mode="aspectFit" class="pay-placeholder-img"></image>
+      </view>
+      <view class="pay-amount">
+        <text class="pay-label">待支付金额</text>
+        <text class="pay-price">¥{{totalPrice}}</text>
+      </view>
+      <button class="btn-primary-g pay-confirm-btn" bindtap="confirmPay">确认支付</button>
+      <button class="btn-ghost-g pay-cancel-btn" bindtap="closePayPopup">取消</button>
+    </view>
   </view>
 </view>

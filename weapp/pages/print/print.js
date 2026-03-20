@@ -4,9 +4,11 @@ const app = getApp()
 Page({
   data: {
     tab: 'self',
+    banners: [],
 
     // --- 编组相片 ---
     code: '', group: null, groupError: '',
+    showPayPopup: false,
 
     // --- 自助打印 ---
     selfStep: 1,           // 1选类型 2选文件/照片 3选规格 4预览/确认 5完成
@@ -34,6 +36,14 @@ Page({
 
   onLoad(options) {
     if (options.tab) this.setData({ tab: options.tab })
+    this.loadBanners()
+  },
+
+  async loadBanners() {
+    try {
+      const banners = await api.get('/api/shop/banners', false)
+      this.setData({ banners: banners || [] })
+    } catch (e) {}
   },
 
   onShow() { this.loadPrinters() },
@@ -68,11 +78,24 @@ Page({
     }
   },
 
-  async pay() {
-    await api.post(`/api/groups/${this.data.group.id}/pay`, {})
-    const data = await api.get(`/api/groups/${this.data.group.id}`)
-    this.setData({ group: data })
-    wx.showToast({ title: '付款成功', icon: 'success' })
+  // Show payment popup instead of paying directly
+  showPayDialog() {
+    this.setData({ showPayPopup: true })
+  },
+
+  closePayPopup() {
+    this.setData({ showPayPopup: false })
+  },
+
+  async confirmPay() {
+    try {
+      await api.post(`/api/groups/${this.data.group.id}/pay`, {})
+      const data = await api.get(`/api/groups/${this.data.group.id}`)
+      this.setData({ group: data, showPayPopup: false })
+      wx.showToast({ title: '付款成功', icon: 'success' })
+    } catch {
+      wx.showToast({ title: '支付失败', icon: 'none' })
+    }
   },
 
   async download() {
@@ -188,7 +211,7 @@ Page({
       type: printType,
       size: sizes[sizeIndex],
       count,
-      ...(printType === 'doc' ? { colorMode, fileName: docFile?.name } : {})
+      ...(printType === 'doc' ? { colorMode, fileName: (docFile && docFile.name) } : {})
     }
     try {
       const res = await api.post('/api/print/self-service', {

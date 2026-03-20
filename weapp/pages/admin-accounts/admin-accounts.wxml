@@ -1,0 +1,56 @@
+<view class="page">
+  <view class="page-header">
+    <text class="page-title">账号管理</text>
+    <button class="btn-add" bindtap="toggleForm">{{showForm ? '取消' : '+ 添加'}}</button>
+  </view>
+
+  <!-- 添加表单 -->
+  <view wx:if="{{showForm}}" class="form-card">
+    <view class="field">
+      <text class="field-label">账号</text>
+      <input class="input-base" placeholder="请输入账号" value="{{formUsername}}" bindinput="onInputUsername" />
+    </view>
+    <view class="field">
+      <text class="field-label">密码</text>
+      <input class="input-base" password placeholder="请输入密码" value="{{formPassword}}" bindinput="onInputPassword" />
+    </view>
+    <view class="field">
+      <text class="field-label">角色</text>
+      <picker range="{{roles}}" range-key="label" value="{{roleIndex}}" bindchange="onRoleChange">
+        <view class="picker-display">{{roles[roleIndex].label}}</view>
+      </picker>
+    </view>
+    <button class="btn-submit" bindtap="createAdmin">创建</button>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+  <view wx:elif="{{admins.length === 0}}" class="empty-tip">暂无管理员</view>
+
+  <view class="admin-list">
+    <view class="admin-card" wx:for="{{admins}}" wx:key="id">
+      <view class="admin-avatar">{{item.username.charAt(0)}}</view>
+      <view class="admin-info">
+        <view class="admin-name">{{item.username}}</view>
+        <view class="admin-role">{{item.role === 'super' ? '超管' : item.role === 'printer_op' ? '打印' : item.role === 'shop_op' ? '商城' : '配送'}}</view>
+      </view>
+      <view class="admin-actions">
+        <text class="action-btn" bindtap="showAccess" data-idx="{{index}}">权限</text>
+        <text class="action-btn delete" bindtap="deleteAdmin" data-idx="{{index}}">删除</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 权限弹窗 -->
+  <view wx:if="{{showAccessPopup}}" class="popup-mask" bindtap="closeAccessPopup">
+    <view class="popup" catchtap="true">
+      <view class="popup-title">分配打印机权限 - {{accessAdminName}}</view>
+      <view class="printer-list">
+        <view class="printer-item" wx:for="{{printers}}" wx:key="id" bindtap="togglePrinterAccess" data-pid="{{item.id}}">
+          <view class="checkbox {{accessChecked.indexOf(item.id) >= 0 ? 'checked' : ''}}"></view>
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+      <button class="btn-submit" bindtap="saveAccess">保存</button>
+    </view>
+  </view>
+</view>

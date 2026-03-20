@@ -32,6 +32,26 @@ router.post('/', requireAuth, upload.array('photos', 30), (req, res) => {
   res.json({ id, code, thumbnails: photos.map(p => p.thumbnail) });
 });
 
+// Upload single temp file (for mini-program step-by-step upload)
+router.post('/upload-temp', requireAuth, upload.single('file'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'no file' });
+  res.json({ url: `/uploads/${req.file.filename}` });
+});
+
+// Create group from already-uploaded URLs
+router.post('/create-from-urls', requireAuth, (req, res) => {
+  const { title, urls } = req.body;
+  if (!urls || !urls.length) return res.status(400).json({ error: 'no urls' });
+  const id = uuidv4();
+  const code = genCode();
+  const photos = urls.map(u => ({ thumbnail: u, original: u }));
+  db.prepare('INSERT INTO photo_groups VALUES (?,?,?,?,?,?,?)').run(
+    id, title || `group-${id.slice(0,6)}`, code,
+    req.admin.id, 0, Date.now(), JSON.stringify(photos)
+  );
+  res.json({ id, code, photo_count: photos.length });
+});
+
 // Admin: list groups
 router.get('/', requireAuth, (req, res) => {
   const groups = req.admin.role === 'super'

@@ -1,0 +1,102 @@
+<view class="page">
+  <!-- Tab 切换 -->
+  <view class="tab-bar">
+    <view class="tab-item {{tab === 0 ? 'active' : ''}}" bindtap="switchTab" data-tab="0">商品管理</view>
+    <view class="tab-item {{tab === 1 ? 'active' : ''}}" bindtap="switchTab" data-tab="1">订单管理</view>
+    <view class="tab-item {{tab === 2 ? 'active' : ''}}" bindtap="switchTab" data-tab="2">轮播图</view>
+  </view>
+
+  <!-- 商品管理 -->
+  <view wx:if="{{tab === 0}}">
+    <view class="page-header">
+      <button class="btn-add" bindtap="toggleForm">{{showForm ? '取消' : '+ 添加商品'}}</button>
+    </view>
+
+    <!-- 添加/编辑表单 -->
+    <view wx:if="{{showForm}}" class="form-card">
+      <view class="field">
+        <text class="field-label">商品名称</text>
+        <input class="input-base" placeholder="请输入名称" value="{{form.name}}" bindinput="onInputName" />
+      </view>
+      <view class="field">
+        <text class="field-label">描述</text>
+        <input class="input-base" placeholder="请输入描述" value="{{form.description}}" bindinput="onInputDesc" />
+      </view>
+      <view class="field-row">
+        <view class="field">
+          <text class="field-label">价格 (元)</text>
+          <input class="input-base" type="digit" placeholder="0" value="{{form.price}}" bindinput="onInputPrice" />
+        </view>
+        <view class="field">
+          <text class="field-label">库存</text>
+          <input class="input-base" type="number" placeholder="0" value="{{form.stock}}" bindinput="onInputStock" />
+        </view>
+      </view>
+      <button class="btn-submit" bindtap="saveProduct">保存</button>
+    </view>
+
+    <view wx:if="{{loading}}" class="loading">加载中...</view>
+    <view wx:elif="{{products.length === 0}}" class="empty-tip">暂无商品</view>
+
+    <view class="product-list">
+      <view class="product-card" wx:for="{{products}}" wx:key="id">
+        <view class="product-info">
+          <view class="product-name">{{item.name}}</view>
+          <view class="product-desc">{{item.description}}</view>
+          <view class="product-price">¥{{item.price}}</view>
+        </view>
+        <view class="product-actions">
+          <text class="action-btn" bindtap="editProduct" data-idx="{{index}}">编辑</text>
+          <text class="action-btn" bindtap="toggleActive" data-idx="{{index}}">{{item.active ? '下架' : '上架'}}</text>
+          <text class="action-btn delete" bindtap="deleteProduct" data-idx="{{index}}">删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 订单管理 -->
+  <view wx:if="{{tab === 1}}">
+    <view wx:if="{{loading}}" class="loading">加载中...</view>
+    <view wx:elif="{{orders.length === 0}}" class="empty-tip">暂无订单</view>
+
+    <view class="order-list">
+      <view class="order-card" wx:for="{{orders}}" wx:key="id">
+        <view class="order-header">
+          <text class="order-id">{{item.id.slice(0, 8)}}</text>
+          <text class="order-status {{item.is_paid ? 'paid' : ''}}">{{item.is_paid ? '已付款' : '待付款'}}</text>
+        </view>
+        <view class="delivery-status">
+          <text class="status-tag {{item.delivery_status}}">{{item.delivery_status === 'packing' ? '配货中' : item.delivery_status === 'shipping' ? '配送中' : item.delivery_status === 'delivered' ? '已送达' : '待付款'}}</text>
+        </view>
+        <view class="order-items">
+          <view wx:for="{{item.items}}" wx:for-item="i" wx:key="index">{{i.name}} x{{i.quantity}}</view>
+        </view>
+        <view class="order-footer">
+          <text class="order-total">¥{{item.total}}</text>
+          <text wx:if="{{item.is_paid && item.delivery_status !== 'delivered'}}" class="action-btn" bindtap="updateOrderStatus" data-idx="{{index}}">
+            {{item.delivery_status === 'packing' ? '发货' : '确认送达'}}
+          </text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 轮播图管理 -->
+  <view wx:if="{{tab === 2}}">
+    <view class="page-header">
+      <button class="btn-add" bindtap="addBanner">+ 添加轮播图</button>
+    </view>
+    <view wx:if="{{banners.length === 0}}" class="empty-tip">暂无轮播图</view>
+    <view class="banner-list">
+      <view class="banner-card" wx:for="{{banners}}" wx:key="id">
+        <image src="{{item.image_url}}" class="banner-thumb" mode="aspectFill"/>
+        <view class="banner-info">
+          <text class="banner-sort">排序: {{item.sort}}</text>
+        </view>
+        <view class="banner-actions">
+          <text class="action-btn delete" bindtap="deleteBanner" data-id="{{item.id}}">删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

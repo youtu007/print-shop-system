@@ -1,0 +1,56 @@
+<view class="page">
+  <!-- 上传区域 -->
+  <view class="upload-card">
+    <view class="field">
+      <text class="field-label">照片标题（可选）</text>
+      <input class="input-base" placeholder="请输入标题" value="{{title}}" bindinput="onInputTitle" />
+    </view>
+
+    <view class="photo-grid">
+      <view class="photo-item" wx:for="{{tempFiles}}" wx:key="index">
+        <image src="{{item.path}}" mode="aspectFill" />
+        <view class="photo-remove" bindtap="removeTemp" data-idx="{{index}}">×</view>
+      </view>
+      <view class="photo-add" bindtap="choosePhotos" wx:if="{{tempFiles.length < 20}}">
+        <text>+</text>
+      </view>
+    </view>
+
+    <button class="btn-upload" bindtap="doUpload" disabled="{{uploading || tempFiles.length === 0}}">
+      {{uploading ? '上传中 ' + uploadProgress : '上传照片'}}
+    </button>
+  </view>
+
+  <!-- 取件码提示 -->
+  <view wx:if="{{lastCode}}" class="code-tip">
+    <text>取件码：</text>
+    <text class="code">{{lastCode}}</text>
+    <text class="copy" bindtap="copyCode">复制</text>
+    <text class="dismiss" bindtap="dismissCode">×</text>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+  <view wx:elif="{{groups.length === 0}}" class="empty-tip">暂无分组</view>
+
+  <view class="group-list">
+    <view class="group-card" wx:for="{{groups}}" wx:key="id">
+      <view class="group-header">
+        <text class="group-code">{{item.code}}</text>
+        <text class="group-status {{item.is_paid ? 'paid' : ''}}">{{item.is_paid ? '已付款' : '待付款'}}</text>
+      </view>
+      <view class="group-photos">
+        <image
+          wx:for="{{item.photos}}"
+          wx:for-item="photo"
+          wx:key="index"
+          src="{{photo.thumbnail}}"
+          mode="aspectFill"
+          data-url="{{photo.original}}"
+          data-urls="{{item.photos}}"
+          bindtap="previewImage"
+        />
+      </view>
+      <view class="group-time">{{item.created_at}}</view>
+    </view>
+  </view>
+</view>

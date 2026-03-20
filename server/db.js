@@ -82,6 +82,9 @@ if (adminCount === 0 || productCount === 0) {
 
   const superId = uuidv4();
   db.prepare(`INSERT INTO admins VALUES (?,?,?,?,?)`).run(superId, 'admin', hash('admin123'), 'super', Date.now());
+  db.prepare(`INSERT INTO admins VALUES (?,?,?,?,?)`).run(uuidv4(), 'printer_user', hash('123456'), 'printer_op', Date.now());
+  db.prepare(`INSERT INTO admins VALUES (?,?,?,?,?)`).run(uuidv4(), 'shop_user', hash('123456'), 'shop_op', Date.now());
+  db.prepare(`INSERT INTO admins VALUES (?,?,?,?,?)`).run(uuidv4(), 'delivery_user', hash('123456'), 'delivery_op', Date.now());
 
   const p1 = uuidv4(), p2 = uuidv4(), p3 = uuidv4();
   db.prepare(`INSERT INTO printers VALUES (?,?,?,?,?,?)`).run(p1, '打印机-A', '前台', 'online', 450, Date.now());

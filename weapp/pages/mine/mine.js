@@ -2,7 +2,7 @@ const api = require('../../utils/api')
 
 Page({
   data: {
-    counts: { unpaid: 0, packing: 0, shipping: 0 },
+    counts: { packing: 0, shipping: 0, delivered: 0 },
     cartCount: 0
   },
 
@@ -13,15 +13,18 @@ Page({
 
   async loadCounts() {
     const saved = wx.getStorageSync('my_orders') || []
-    if (!saved.length) return
+    if (!saved.length) {
+      this.setData({ counts: { packing: 0, shipping: 0, delivered: 0 } })
+      return
+    }
     const results = await Promise.all(
       saved.map(id => api.get(`/api/shop/orders/${id}`, false).catch(() => null))
     )
-    const counts = { unpaid: 0, packing: 0, shipping: 0 }
+    const counts = { packing: 0, shipping: 0, delivered: 0 }
     results.filter(Boolean).forEach(o => {
-      if (!o.is_paid) counts.unpaid++
-      else if (o.delivery_status === 'packing') counts.packing++
+      if (o.delivery_status === 'packing') counts.packing++
       else if (o.delivery_status === 'shipping') counts.shipping++
+      else if (o.delivery_status === 'delivered') counts.delivered++
     })
     this.setData({ counts })
   },
@@ -34,6 +37,16 @@ Page({
 
   goOrders(e) {
     const status = e.currentTarget.dataset.status
+    // 查看完后气泡消失
+    const counts = { ...this.data.counts }
+    if (status === 'delivered') {
+      counts.delivered = 0
+    } else if (status === 'shipping') {
+      counts.shipping = 0
+    } else if (status === 'packing') {
+      counts.packing = 0
+    }
+    this.setData({ counts })
     wx.navigateTo({ url: `/pages/order-list/order-list?status=${status}` })
   },
 
@@ -45,7 +58,7 @@ Page({
     wx.navigateTo({ url: '/pages/cart/cart' })
   },
 
-  goAdmin() {
-    wx.navigateTo({ url: '/pages/admin/admin' })
+  goAdminLogin() {
+    wx.navigateTo({ url: '/pages/admin-login/admin-login' })
   }
 })

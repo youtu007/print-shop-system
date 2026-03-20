@@ -4,11 +4,17 @@
     "pages/printers/printers",
     "pages/shop/shop",
     "pages/order/order",
-    "pages/admin/admin",
     "pages/mine/mine",
     "pages/order-list/order-list",
     "pages/order-place/order-place",
-    "pages/cart/cart"
+    "pages/cart/cart",
+    "pages/admin-login/admin-login",
+    "pages/admin-dashboard/admin-dashboard",
+    "pages/admin-printers/admin-printers",
+    "pages/admin-accounts/admin-accounts",
+    "pages/admin-groups/admin-groups",
+    "pages/admin-shop/admin-shop",
+    "pages/admin-delivery/admin-delivery"
   ],
   "window": {
     "navigationBarTitleText": "打印小站",
@@ -28,7 +34,7 @@
         "iconPath": "assets/icons/print.png",
         "selectedIconPath": "assets/icons/print-active.png"
       },
-{
+      {
         "pagePath": "pages/shop/shop",
         "text": "商城",
         "iconPath": "assets/icons/shop.png",

@@ -1,0 +1,38 @@
+<view class="page">
+  <!-- Tab 切换 -->
+  <view class="tab-bar">
+    <view class="tab-item {{tab === 'packing' ? 'active' : ''}}" bindtap="switchTab" data-tab="packing">
+      待发货
+      <view class="tab-count" wx:if="{{ordersFilter('packing').length}}">{{ordersFilter('packing').length}}</view>
+    </view>
+    <view class="tab-item {{tab === 'shipping' ? 'active' : ''}}" bindtap="switchTab" data-tab="shipping">
+      配送中
+      <view class="tab-count" wx:if="{{ordersFilter('shipping').length}}">{{ordersFilter('shipping').length}}</view>
+    </view>
+    <view class="tab-item {{tab === 'delivered' ? 'active' : ''}}" bindtap="switchTab" data-tab="delivered">
+      已送达
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+  <view wx:elif="{{filteredOrders.length === 0}}" class="empty-tip">暂无订单</view>
+
+  <view class="order-list">
+    <view class="order-card" wx:for="{{filteredOrders}}" wx:key="id">
+      <view class="order-header">
+        <text class="order-id">{{item.id.slice(0, 8)}}</text>
+        <text class="order-time">{{item.created_at}}</text>
+      </view>
+      <view class="order-customer">{{item.customer_name}}</view>
+      <view class="order-items">
+        <view wx:for="{{item.items}}" wx:for-item="i" wx:key="index">{{i.name}} x{{i.quantity}}</view>
+      </view>
+      <view class="order-footer">
+        <text class="order-total">¥{{item.total}}</text>
+        <button wx:if="{{item.paid && item.delivery_status !== 'delivered'}}" class="btn-action" bindtap="doAction" data-idx="{{index}}">
+          {{item.delivery_status === 'packing' ? '确认发货' : '确认送达'}}
+        </button>
+      </view>
+    </view>
+  </view>
+</view>
