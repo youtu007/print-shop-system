@@ -1,11 +1,18 @@
 // server/index.js
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
+const db = require('./db');
 
 const app = express();
 app.use(cors());
+
+// 微信支付回调需要原始 body，必须在 bodyParser.json() 之前注册
+const payment = require('./routes/payment');
+app.post('/api/payment/notify', express.raw({ type: 'application/json' }), payment.handleNotify);
+
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
@@ -15,13 +22,21 @@ app.use('/api/groups',   require('./routes/groups'));
 app.use('/api/print',    require('./routes/print'));
 app.use('/api/shop',     require('./routes/shop'));
 app.use('/api/admin',    require('./routes/admin'));
+app.use('/api/payment',  payment.router);
 
 // Serve Vue build in production
-const webDist = path.join(__dirname, '..', 'web', 'dist');
+const webDist = path.join(__dirname, '..', 'web-admin', 'dist');
 if (require('fs').existsSync(webDist)) {
   app.use(express.static(webDist));
   app.get('*', (req, res) => res.sendFile(path.join(webDist, 'index.html')));
 }
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+
+// 等数据库初始化完成后再启动
+db.init().then(() => {
+  app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+}).catch(err => {
+  console.error('[db] 初始化失败:', err);
+  process.exit(1);
+});

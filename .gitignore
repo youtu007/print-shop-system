@@ -4,4 +4,8 @@ uploads/
 .DS_Store
 *.log
 web-admin/dist/
+web-admin/dist.zip
 weapp/project.private.config.json
+.env
+server/certs/
+weapp_js_backup/

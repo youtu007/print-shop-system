@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
@@ -6,7 +6,9 @@ import Printers from '../views/Printers.vue'
 import Groups from '../views/Groups.vue'
 import Shop from '../views/Shop.vue'
 import Orders from '../views/Orders.vue'
+import Delivery from '../views/Delivery.vue'
 import Admins from '../views/Admins.vue'
+import Banners from '../views/Banners.vue'
 import Layout from '../components/Layout.vue'
 
 const routes = [
@@ -25,13 +27,15 @@ const routes = [
       { path: 'groups', name: 'Groups', component: Groups },
       { path: 'shop', name: 'Shop', component: Shop },
       { path: 'orders', name: 'Orders', component: Orders },
+      { path: 'delivery', name: 'Delivery', component: Delivery },
+      { path: 'banners', name: 'Banners', component: Banners, meta: { requiresSuper: true } },
       { path: 'admins', name: 'Admins', component: Admins, meta: { requiresSuper: true } }
     ]
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes
 })
 

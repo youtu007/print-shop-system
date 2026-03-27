@@ -36,7 +36,7 @@
             </td>
             <td>{{ formatTime(admin.created_at) }}</td>
             <td>
-              <button class="btn-ghost" @click="openAccessModal(admin)">权限</button>
+              <button v-if="admin.role === 'printer_op'" class="btn-ghost" @click="openAccessModal(admin)">权限</button>
               <button
                 v-if="admin.id !== currentAdminId"
                 class="btn-danger"

@@ -1,0 +1,29 @@
+# 微信云托管配置
+edition: 2.0
+name: printer-demo
+envId: ${ENV_ID}
+
+services:
+  # 后端服务
+  server:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    port: 3001
+    env:
+      - NODE_ENV=production
+    # 从云托管环境变量读取配置（MYSQL_ADDRESS 等由 CloudBase 自动注入，无需手动映射）
+    config:
+      - JWT_SECRET=${JWT_SECRET}
+      - UPLOADS_DIR=/app/uploads
+      - WECHAT_APPID=${WECHAT_APPID}
+      - WECHAT_APPSECRET=${WECHAT_APPSECRET}
+      - WECHAT_MCHID=${WECHAT_MCHID}
+      - WECHAT_API_KEY=${WECHAT_API_KEY}
+      - WECHAT_SERIAL_NO=${WECHAT_SERIAL_NO}
+      - WECHAT_NOTIFY_URL=${WECHAT_NOTIFY_URL}
+
+# 可选：创建 MySQL 数据库（首次部署时执行）
+initDatabases:
+  - name: ${TCB_MYSQL_DATABASE}
+    type: mysql

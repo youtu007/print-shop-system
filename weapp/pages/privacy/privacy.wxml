@@ -1,0 +1,119 @@
+<scroll-view class="page" scroll-y>
+  <view class="header">
+    <text class="title">隐私政策</text>
+    <text class="date">更新日期：2026年3月</text>
+  </view>
+
+  <view class="intro">
+    <text class="p">「打印小站」非常重视您的隐私保护。本政策说明我们如何收集、使用和保护您的个人信息，请您仔细阅读。</text>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">01</text><text>我们收集哪些信息</text></view>
+    <view class="section-body">
+      <view class="info-card">
+        <view class="info-row">
+          <view class="info-tag">手机号码</view>
+          <text class="info-use">用于订单关联、配送联系及账号识别</text>
+        </view>
+        <view class="info-row">
+          <view class="info-tag">上传文件及照片</view>
+          <text class="info-use">您主动上传用于打印的文档、图片，仅用于完成打印服务</text>
+        </view>
+        <view class="info-row">
+          <view class="info-tag">收货地址</view>
+          <text class="info-use">姓名、地址、联系方式，用于商品配送</text>
+        </view>
+        <view class="info-row">
+          <view class="info-tag">订单信息</view>
+          <text class="info-use">购买记录、支付状态，用于订单管理和售后服务</text>
+        </view>
+        <view class="info-row last">
+          <view class="info-tag">设备信息</view>
+          <text class="info-use">基本设备型号及系统版本，用于保障服务正常运行</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">02</text><text>我们如何使用这些信息</text></view>
+    <view class="section-body">
+      <view class="item-row"><text class="dot">·</text><text class="item-text">提供打印、商城购物、配送等核心服务</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">处理订单、支付及售后问题</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">发送订单状态通知</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">改善服务质量及用户体验</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">遵从法律法规要求</text></view>
+      <view class="tip-box">
+        <text class="tip-text">我们不会将您的个人信息用于与上述目的无关的其他用途</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">03</text><text>信息共享与披露</text></view>
+    <view class="section-body">
+      <text class="p" style="margin-bottom:20rpx">我们不会向第三方出售您的个人信息。以下情况除外：</text>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">微信支付：支付时需向微信支付提供必要的订单信息</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">配送服务：配送时需向配送人员提供收货姓名、地址、手机号</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">法律要求：依法律法规或政府要求披露的情形</text></view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">04</text><text>信息存储与保护</text></view>
+    <view class="section-body">
+      <view class="item-row"><text class="dot">·</text><text class="item-text">您的信息存储于腾讯云服务器（中国境内），采用加密传输和存储措施保障数据安全</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">上传的打印文件在打印任务完成后将被定期清理</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">我们会在实现服务目的所必要的最短时间内保存您的信息</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">账号注销后，我们将在 15 个工作日内删除您的个人信息</text></view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">05</text><text>您的权利</text></view>
+    <view class="section-body">
+      <view class="right-row">
+        <view class="right-label">查阅权</view>
+        <text class="right-desc">可通过"我的订单"查看您的订单及相关信息</text>
+      </view>
+      <view class="right-row">
+        <view class="right-label">更正权</view>
+        <text class="right-desc">如发现信息有误，可联系客服更正</text>
+      </view>
+      <view class="right-row">
+        <view class="right-label">删除权</view>
+        <text class="right-desc">可申请删除您的账号及相关数据</text>
+      </view>
+      <view class="right-row last">
+        <view class="right-label">撤回同意</view>
+        <text class="right-desc">可通过退出登录撤回手机号授权，撤回后将无法使用需登录的功能</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">06</text><text>未成年人保护</text></view>
+    <view class="section-body">
+      <text class="p">本服务不面向 14 周岁以下未成年人。若您是未成年人，请在监护人陪同下使用本服务，并请监护人仔细阅读本政策。</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">07</text><text>政策更新</text></view>
+    <view class="section-body">
+      <text class="p">我们可能适时修订本政策。修订后的政策将在小程序内公示，重大变更将以弹窗方式通知您。继续使用本服务即视为同意更新后的政策。</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">08</text><text>联系我们</text></view>
+    <view class="section-body">
+      <text class="p">如对本隐私政策有任何疑问或需行使上述权利，请通过小程序内客服功能联系我们，我们将在 3 个工作日内回复处理。</text>
+    </view>
+  </view>
+
+  <view class="footer">
+    <text class="footer-text">— 打印小站 —</text>
+  </view>
+</scroll-view>

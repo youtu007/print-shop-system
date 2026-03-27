@@ -8,10 +8,10 @@
     "es6": false,
     "postcss": false,
     "compileWorklet": false,
-    "minified": false,
-    "uglifyFileName": false,
-    "uploadWithSourceMap": true,
-    "enhance": false,
+    "minified": true,
+    "uglifyFileName": true,
+    "uploadWithSourceMap": false,
+    "enhance": true,
     "packNpmManually": false,
     "packNpmRelationList": [],
     "minifyWXSS": true,
@@ -19,6 +19,7 @@
     "localPlugins": false,
     "disableUseStrict": false,
     "useCompilerPlugins": false,
+    "lazyCodeLoading": "requiredComponents",
     "condition": false,
     "swc": false,
     "disableSWC": true,
@@ -33,5 +34,6 @@
     "ignore": [],
     "include": []
   },
-  "editorSetting": {}
+  "editorSetting": {},
+  "libVersion": "3.15.0"
 }

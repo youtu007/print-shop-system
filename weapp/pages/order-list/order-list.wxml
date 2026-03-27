@@ -1,27 +1,33 @@
 <view class="page">
-  <view class="title">
-    {{filter === 'unpaid' ? '待付款' : filter === 'packing' ? '待发货' : filter === 'shipping' ? '待收货' : '全部订单'}}
+  <view class="title">{{filter === 'unpaid' ? '待付款' : filter === 'packing' ? '待发货' : filter === 'shipping' ? '待收货' : '全部订单'}}</view>
+
+  <view class="search-bar">
+    <input class="search-input" placeholder="输入下单手机号查询" value="{{searchPhone}}" bindinput="onSearchInput" type="number"/>
+    <button class="search-btn" bindtap="doSearch">查询</button>
   </view>
 
   <view wx:if="{{loading}}" class="empty">加载中…</view>
   <view wx:elif="{{orders.length === 0}}" class="empty">暂无相关订单</view>
 
-  <view class="order-card order-card-{{item.statusCls}}" wx:for="{{orders}}" wx:key="id">
-    <view class="order-hd">
-      <text class="order-id">订单 #{{item.shortId}}</text>
-      <view class="status-tag {{item.statusCls}}">{{item.statusText}}</view>
+  <view class="swipe-wrapper" wx:for="{{orders}}" wx:key="id" bindtouchstart="onTouchStart" bindtouchend="onTouchEnd" data-idx="{{index}}">
+    <view class="order-card order-card-{{item.statusCls}}" style="transform:translateX({{openIdx===index?'-160rpx':'0'}});transition:transform 0.25s">
+      <view class="order-hd">
+        <text class="order-id">订单 #{{item.shortId}}</text>
+        <view class="status-tag {{item.statusCls}}">{{item.statusText}}</view>
+      </view>
+      <view class="order-addr">
+        <view class="css-icon css-icon-sm icon-location" style="color:var(--color-text-tertiary);margin-right:6rpx;vertical-align:middle"></view>
+        <text class="order-addr-text">{{item.address}}</text>
+      </view>
+      <view class="order-items-list">
+        <text class="order-item-line" wx:for="{{item.items}}" wx:key="id" wx:for-item="prod">{{prod.name}} × {{prod.qty}}</text>
+      </view>
+      <view class="order-ft">
+        <text class="order-total">合计 ¥{{item.total_price}}</text>
+        <text class="order-time">{{item.timeStr}}</text>
+        <button wx:if="{{filter === 'shipping'}}" class="btn-confirm" bindtap="confirmReceive" data-id="{{item.id}}">确认收货</button>
+      </view>
     </view>
-    <view class="order-addr">
-      <view class="css-icon css-icon-sm icon-location" style="color:var(--color-text-tertiary);margin-right:6rpx;vertical-align:middle"></view>
-      <text class="order-addr-text">{{item.address}}</text>
-    </view>
-    <view class="order-items-list">
-      <text class="order-item-line" wx:for="{{item.items}}" wx:key="id" wx:for-item="prod">{{prod.name}} × {{prod.qty}}</text>
-    </view>
-    <view class="order-ft">
-      <text class="order-total">合计 ¥{{item.total_price}}</text>
-      <text class="order-time">{{item.timeStr}}</text>
-      <button wx:if="{{filter === 'shipping'}}" class="btn-confirm" bindtap="confirmReceive" data-id="{{item.id}}">确认收货</button>
-    </view>
+    <view class="swipe-del" bindtap="deleteOrder" data-idx="{{index}}">删除</view>
   </view>
 </view>

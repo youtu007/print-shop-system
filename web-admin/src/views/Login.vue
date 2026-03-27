@@ -37,25 +37,6 @@
         <div v-if="error" class="error-tip">{{ error }}</div>
       </form>
 
-      <div class="demo-tip">
-        <div class="demo-title">演示账号</div>
-        <div class="demo-row">
-          <span class="demo-label">超管</span>
-          <span class="demo-val">admin / admin123</span>
-        </div>
-        <div class="demo-row">
-          <span class="demo-label">打印</span>
-          <span class="demo-val">printer_user / 123456</span>
-        </div>
-        <div class="demo-row">
-          <span class="demo-label">商城</span>
-          <span class="demo-val">shop_user / 123456</span>
-        </div>
-        <div class="demo-row">
-          <span class="demo-label">配送</span>
-          <span class="demo-val">delivery_user / 123456</span>
-        </div>
-      </div>
     </div>
   </div>
 </template>

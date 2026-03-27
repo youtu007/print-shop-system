@@ -75,10 +75,15 @@ const menus = computed(() => {
 
   if (roleVal === 'super' || roleVal === 'shop_op') {
     list.push({ path: '/shop', icon: '🛒', label: '商品管理' })
+    list.push({ path: '/banners', icon: '🎠', label: '轮播图' })
   }
 
   if (roleVal === 'super' || roleVal === 'shop_op' || roleVal === 'delivery_op') {
     list.push({ path: '/orders', icon: '📦', label: '订单管理' })
+  }
+
+  if (roleVal === 'super' || roleVal === 'delivery_op') {
+    list.push({ path: '/delivery', icon: '🚚', label: '配送管理' })
   }
 
   if (roleVal === 'super') {

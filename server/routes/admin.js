@@ -11,87 +11,120 @@ const hash = (p) => {
 };
 
 // Dashboard — role-adaptive statistics
-router.get('/dashboard', requireAuth, (req, res) => {
-  const role = req.admin.role;
-  const result = {};
+router.get('/dashboard', requireAuth, async (req, res) => {
+  try {
+    const role = req.admin.role;
+    const result = {};
 
-  if (role === 'super' || role === 'printer_op') {
-    if (role === 'super') {
-      result.online_printers = db.prepare("SELECT COUNT(*) as c FROM printers WHERE status = 'online'").get().c;
-      result.total_printers = db.prepare("SELECT COUNT(*) as c FROM printers").get().c;
-    } else {
-      const accessIds = db.prepare('SELECT printer_id FROM admin_printer_access WHERE admin_id = ?').all(req.admin.id).map(r => r.printer_id);
-      if (accessIds.length > 0) {
-        const placeholders = accessIds.map(() => '?').join(',');
-        result.online_printers = db.prepare(`SELECT COUNT(*) as c FROM printers WHERE status = 'online' AND id IN (${placeholders})`).get(...accessIds).c;
-        result.total_printers = accessIds.length;
+    if (role === 'super' || role === 'printer_op') {
+      if (role === 'super') {
+        const r1 = await db.get("SELECT COUNT(*) as c FROM printers WHERE status = 'online'");
+        const r2 = await db.get('SELECT COUNT(*) as c FROM printers');
+        result.online_printers = r1.c;
+        result.total_printers = r2.c;
       } else {
-        result.online_printers = 0;
-        result.total_printers = 0;
+        const accessRows = await db.all('SELECT printer_id FROM admin_printer_access WHERE admin_id = ?', [req.admin.id]);
+        const accessIds = accessRows.map(r => r.printer_id);
+        if (accessIds.length > 0) {
+          const ph = accessIds.map(() => '?').join(',');
+          const r1 = await db.get(`SELECT COUNT(*) as c FROM printers WHERE status = 'online' AND id IN (${ph})`, accessIds);
+          result.online_printers = r1.c;
+          result.total_printers = accessIds.length;
+        } else {
+          result.online_printers = 0;
+          result.total_printers = 0;
+        }
       }
+      const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
+      const r3 = await db.get('SELECT COUNT(*) as c FROM print_jobs WHERE created_at >= ?', [todayStart.getTime()]);
+      const r4 = await db.get('SELECT COUNT(*) as c FROM photo_groups');
+      result.today_jobs = r3.c;
+      result.total_groups = r4.c;
     }
-    const todayStart = new Date(); todayStart.setHours(0,0,0,0);
-    result.today_jobs = db.prepare('SELECT COUNT(*) as c FROM print_jobs WHERE created_at >= ?').get(todayStart.getTime()).c;
-    result.total_groups = db.prepare('SELECT COUNT(*) as c FROM photo_groups').get().c;
-  }
 
-  if (role === 'super' || role === 'shop_op') {
-    result.pending_orders = db.prepare("SELECT COUNT(*) as c FROM shop_orders WHERE delivery_status != 'delivered'").get().c;
-    result.total_products = db.prepare("SELECT COUNT(*) as c FROM shop_products").get().c;
-  }
+    if (role === 'super' || role === 'shop_op') {
+      const r5 = await db.get("SELECT COUNT(*) as c FROM shop_orders WHERE delivery_status != 'delivered'");
+      const r6 = await db.get('SELECT COUNT(*) as c FROM shop_products');
+      result.pending_orders = r5.c;
+      result.total_products = r6.c;
+    }
 
-  if (role === 'super' || role === 'delivery_op') {
-    result.packing_orders = db.prepare("SELECT COUNT(*) as c FROM shop_orders WHERE delivery_status = 'packing'").get().c;
-    result.shipping_orders = db.prepare("SELECT COUNT(*) as c FROM shop_orders WHERE delivery_status = 'shipping'").get().c;
-    result.delivered_orders = db.prepare("SELECT COUNT(*) as c FROM shop_orders WHERE delivery_status = 'delivered'").get().c;
-  }
+    if (role === 'super' || role === 'delivery_op') {
+      const r7 = await db.get("SELECT COUNT(*) as c FROM shop_orders WHERE delivery_status = 'packing'");
+      const r8 = await db.get("SELECT COUNT(*) as c FROM shop_orders WHERE delivery_status = 'shipping'");
+      const r9 = await db.get("SELECT COUNT(*) as c FROM shop_orders WHERE delivery_status = 'delivered'");
+      result.packing_orders = r7.c;
+      result.shipping_orders = r8.c;
+      result.delivered_orders = r9.c;
+    }
 
-  if (role === 'super') {
-    result.total_admins = db.prepare("SELECT COUNT(*) as c FROM admins").get().c;
-  }
+    if (role === 'super') {
+      const r10 = await db.get('SELECT COUNT(*) as c FROM admins');
+      result.total_admins = r10.c;
+    }
 
-  res.json(result);
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 // List admins (super only)
-router.get('/admins', requireAuth, requireRole('super'), (req, res) => {
-  res.json(db.prepare('SELECT id, username, role, created_at FROM admins').all());
+router.get('/admins', requireAuth, requireRole('super'), async (req, res) => {
+  try {
+    res.json(await db.all('SELECT id, username, role, created_at FROM admins'));
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 // Create admin (super only)
-router.post('/admins', requireAuth, requireRole('super'), (req, res) => {
-  const { username, password, role } = req.body;
-  if (!username || !password || !role) return res.status(400).json({ error: 'missing fields' });
-  const id = uuidv4();
+router.post('/admins', requireAuth, requireRole('super'), async (req, res) => {
   try {
-    db.prepare('INSERT INTO admins VALUES (?,?,?,?,?)').run(id, username, hash(password), role, Date.now());
+    const { username, password, role } = req.body;
+    if (!username || !password || !role) return res.status(400).json({ error: 'missing fields' });
+    const id = uuidv4();
+    await db.run('INSERT INTO admins VALUES (?,?,?,?,?)', [id, username, hash(password), role, Date.now()]);
     res.json({ id, username, role });
-  } catch {
+  } catch (e) {
     res.status(400).json({ error: 'username already exists' });
   }
 });
 
 // Delete admin (super only, cannot delete self)
-router.delete('/admins/:id', requireAuth, requireRole('super'), (req, res) => {
-  if (req.params.id === req.admin.id) return res.status(400).json({ error: 'cannot delete yourself' });
-  db.prepare('DELETE FROM admin_printer_access WHERE admin_id = ?').run(req.params.id);
-  db.prepare('DELETE FROM admins WHERE id = ?').run(req.params.id);
-  res.json({ ok: true });
+router.delete('/admins/:id', requireAuth, requireRole('super'), async (req, res) => {
+  try {
+    if (req.params.id === req.admin.id) return res.status(400).json({ error: 'cannot delete yourself' });
+    await db.run('DELETE FROM admin_printer_access WHERE admin_id = ?', [req.params.id]);
+    await db.run('DELETE FROM admins WHERE id = ?', [req.params.id]);
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 // Assign printer access (super only)
-router.put('/admins/:id/access', requireAuth, requireRole('super'), (req, res) => {
-  const { printer_ids } = req.body;
-  db.prepare('DELETE FROM admin_printer_access WHERE admin_id = ?').run(req.params.id);
-  const ins = db.prepare('INSERT INTO admin_printer_access VALUES (?,?)');
-  (printer_ids || []).forEach(pid => ins.run(req.params.id, pid));
-  res.json({ ok: true });
+router.put('/admins/:id/access', requireAuth, requireRole('super'), async (req, res) => {
+  try {
+    const { printer_ids } = req.body;
+    await db.run('DELETE FROM admin_printer_access WHERE admin_id = ?', [req.params.id]);
+    for (const pid of (printer_ids || [])) {
+      await db.run('INSERT INTO admin_printer_access VALUES (?,?)', [req.params.id, pid]);
+    }
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 // Get printer access for an admin (super only)
-router.get('/admins/:id/access', requireAuth, requireRole('super'), (req, res) => {
-  const rows = db.prepare('SELECT printer_id FROM admin_printer_access WHERE admin_id = ?').all(req.params.id);
-  res.json(rows.map(r => r.printer_id));
+router.get('/admins/:id/access', requireAuth, requireRole('super'), async (req, res) => {
+  try {
+    const rows = await db.all('SELECT printer_id FROM admin_printer_access WHERE admin_id = ?', [req.params.id]);
+    res.json(rows.map(r => r.printer_id));
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 module.exports = router;

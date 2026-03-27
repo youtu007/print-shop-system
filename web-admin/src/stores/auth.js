@@ -25,7 +25,7 @@ export const useAuthStore = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('role')
     localStorage.removeItem('username')
-    window.location.href = '/login'
+    window.location.href = '/#/login'
   }
 
   return {

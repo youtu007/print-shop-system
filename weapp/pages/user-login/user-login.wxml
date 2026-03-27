@@ -1,0 +1,38 @@
+<view class="page">
+  <view class="content">
+    <view class="logo-wrap">
+      <view class="logo-circle">
+        <view class="css-icon css-icon-lg icon-print" style="color:#fff"></view>
+      </view>
+      <text class="app-name">打印小站</text>
+      <text class="app-sub">登录后可使用商城及订单功能</text>
+    </view>
+
+    <view class="agree-row" bindtap="toggleAgree">
+      <view class="agree-box {{agreed ? 'agree-box-checked' : ''}}">
+        <view wx:if="{{agreed}}" class="agree-tick">✓</view>
+      </view>
+      <text class="agree-text">我已阅读并同意</text>
+      <text class="agree-link" catchtap="goAgreement">《用户协议》</text>
+      <text class="agree-text">和</text>
+      <text class="agree-link" catchtap="goPrivacy">《隐私政策》</text>
+    </view>
+
+    <view class="btn-wrap">
+      <button
+        wx:if="{{agreed}}"
+        class="btn-phone {{loading ? 'btn-loading' : ''}}"
+        open-type="getPhoneNumber"
+        bindgetphonenumber="onGetPhoneNumber"
+        disabled="{{loading}}"
+      >{{loading ? '登录中...' : '手机号快捷登录'}}</button>
+      <button
+        wx:else
+        class="btn-phone btn-disabled"
+        bindtap="onTapDisabled"
+      >手机号快捷登录</button>
+    </view>
+
+    <text class="privacy-tip">授权后仅用于订单收货及账号识别，不会泄露给第三方</text>
+  </view>
+</view>

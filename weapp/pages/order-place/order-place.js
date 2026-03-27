@@ -1,82 +1,91 @@
-const api = require('../../utils/api')
-
+const api = require("../../utils/api");
 Page({
-  data: {
-    items: [],
-    totalQty: 0,
-    totalPrice: '0.00',
-    form: { name: '', phone: '', address: '' },
-    showPayPopup: false,
-    pendingOrderId: ''
-  },
-
+  data: { items: [], totalQty: 0, totalPrice: "0.00", form: { name: "", phone: "", address: "" } },
   onLoad() {
-    // support both single-product (pendingOrder) and multi-item (pendingItems) entry
-    const app = getApp().globalData
-    let items = app.pendingItems || (app.pendingOrder ? [{ ...app.pendingOrder }] : null)
-    if (!items || !items.length) { wx.navigateBack(); return }
-
-    items = items.map(i => ({ ...i, subtotal: (i.price * i.qty).toFixed(2) }))
-    const totalQty = items.reduce((s, i) => s + i.qty, 0)
-    const totalPrice = items.reduce((s, i) => s + i.price * i.qty, 0).toFixed(2)
-    this.setData({ items, totalQty, totalPrice })
+    const t = getApp().globalData;
+    let e = t.pendingItems || (t.pendingOrder ? [{ ...t.pendingOrder }] : null);
+    if (!e || !e.length) return void wx.navigateBack();
+    e = e.map(t => ({ ...t, subtotal: (t.price * t.qty).toFixed(2) }));
+    const a = e.reduce((t, e) => t + e.qty, 0);
+    const o = e.reduce((t, e) => t + e.price * e.qty, 0).toFixed(2);
+    const addresses = wx.getStorageSync('address_book') || [];
+    const def = addresses.find(a => a.isDefault) || addresses[0];
+    const phone = wx.getStorageSync('user_phone') || '';
+    const name = wx.getStorageSync('user_name') || '';
+    const form = def
+      ? { name: def.name, phone: def.phone, address: def.address }
+      : { name, phone, address: '' };
+    this.setData({ items: e, totalQty: a, totalPrice: o, form });
   },
-
-  onInput(e) {
-    const form = { ...this.data.form }
-    form[e.currentTarget.dataset.field] = e.detail.value
-    this.setData({ form })
+  goAddressBook() {
+    wx.navigateTo({ url: '/pages/address-book/address-book?select=1' });
   },
-
+  onInput(t) {
+    const e = { ...this.data.form };
+    e[t.currentTarget.dataset.field] = t.detail.value;
+    this.setData({ form: e });
+  },
   async placeOrder() {
-    const { name, phone, address } = this.data.form
+    const { name, phone, address } = this.data.form;
     if (!name || !phone || !address) {
-      wx.showToast({ title: '请填写完整信息', icon: 'none' })
-      return
+      wx.showToast({ title: "请填写完整信息", icon: "none" });
+      return;
     }
-    const total = parseFloat(this.data.totalPrice)
+    const _app = getApp();
+    let openid = _app.globalData.openid;
+    if (!openid && _app.globalData.openidReady) openid = await _app.globalData.openidReady;
+    if (!openid) {
+      wx.showToast({ title: "登录状态异常，请重启小程序", icon: "none" });
+      return;
+    }
+    const totalAmount = parseFloat(this.data.totalPrice);
+    wx.showLoading({ title: "下单中...", mask: true });
     try {
-      // Create order (unpaid)
-      const data = await api.post('/api/shop/orders', {
+      const order = await api.post("/api/shop/orders", {
         customer_name: name, phone, address,
-        items: this.data.items.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.price })),
-        total_price: total
-      })
-      // Show payment popup
-      this.setData({ pendingOrderId: data.id, showPayPopup: true })
-    } catch {
-      wx.showToast({ title: '下单失败', icon: 'none' })
+        items: this.data.items.map(t => ({ id: t.id, name: t.name, qty: t.qty, price: t.price, file_info: t.file_info || null })),
+        total_price: totalAmount
+      });
+      // 下单成功立刻保存订单ID，不等支付，防止支付失败后订单消失
+      const _saved = wx.getStorageSync("my_orders") || [];
+      _saved.unshift(order.id);
+      wx.setStorageSync("my_orders", _saved.slice(0, 50));
+      // tabBar 红点提醒
+      try { wx.setTabBarBadge({ index: 2, text: '新' }); } catch(e) {}
+      // 保存下单手机号，用于"我的订单"按手机号查询
+      const _phones = wx.getStorageSync("order_phones") || [];
+      if (phone && !_phones.includes(phone)) _phones.unshift(phone);
+      wx.setStorageSync("order_phones", _phones.slice(0, 5));
+      const prepayRes = await api.post("/api/payment/prepay", {
+        openid, order_id: order.id, order_type: "shop",
+        description: "商城订单", total_amount: totalAmount
+      });
+      wx.hideLoading();
+      await this._requestPayment(prepayRes);
+      // 支付成功
+      const app = getApp();
+      const itemIds = new Set(this.data.items.map(t => t.id));
+      app.globalData.cart = (app.globalData.cart || []).filter(t => !itemIds.has(t.id));
+      app.globalData.pendingItems = null;
+      app.globalData.pendingOrder = null;
+      wx.showToast({ title: "支付成功", icon: "success" });
+      setTimeout(() => { wx.redirectTo({ url: `/pages/order/order?id=${order.id}` }); }, 800);
+    } catch (err) {
+      wx.hideLoading();
+      if (err && err.errMsg && err.errMsg.includes("cancel")) {
+        wx.showToast({ title: "已取消支付", icon: "none" });
+      } else {
+        wx.showToast({ title: (err && (err.error || err.errMsg)) || "操作失败，请重试", icon: "none", duration: 4000 });
+      }
     }
   },
-
-  closePayPopup() {
-    this.setData({ showPayPopup: false })
-  },
-
-  async confirmPay() {
-    const orderId = this.data.pendingOrderId
-    try {
-      await api.post(`/api/shop/orders/${orderId}/pay`, {})
-
-      // Save order to local storage
-      const saved = wx.getStorageSync('my_orders') || []
-      saved.unshift(orderId)
-      wx.setStorageSync('my_orders', saved.slice(0, 20))
-
-      // Clear cart
-      const orderedIds = new Set(this.data.items.map(i => i.id))
-      const app = getApp().globalData
-      app.cart = (app.cart || []).filter(i => !orderedIds.has(i.id))
-      app.pendingItems = null
-      app.pendingOrder = null
-
-      this.setData({ showPayPopup: false })
-      wx.showToast({ title: '支付成功', icon: 'success' })
-      setTimeout(() => {
-        wx.redirectTo({ url: `/pages/order/order?id=${orderId}` })
-      }, 800)
-    } catch {
-      wx.showToast({ title: '支付失败', icon: 'none' })
-    }
+  _requestPayment(p) {
+    return new Promise((resolve, reject) => {
+      wx.requestPayment({
+        timeStamp: p.timeStamp, nonceStr: p.nonceStr,
+        package: p.package, signType: p.signType || "RSA",
+        paySign: p.paySign, success: resolve, fail: reject
+      });
+    });
   }
-})
+});

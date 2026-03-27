@@ -1,0 +1,85 @@
+<scroll-view class="page" scroll-y>
+  <view class="header">
+    <text class="title">用户服务协议</text>
+    <text class="date">更新日期：2026年3月</text>
+  </view>
+
+  <view class="intro">
+    <text class="p">欢迎使用「打印小站」微信小程序（以下简称"本服务"）。请您在使用本服务前仔细阅读本协议。使用本服务即表示您同意受本协议约束。</text>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">01</text><text>服务说明</text></view>
+    <view class="section-body">
+      <text class="p">本服务由「打印小站」提供，主要功能包括：</text>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">自助打印服务：用户可上传文件，选择打印机完成打印任务</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">商城购物：用户可浏览商品、加入购物车并下单购买</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">配送服务：提供商品配送及订单状态查询</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">照片打印：支持照片上传及证件照打印服务</text></view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">02</text><text>账号与登录</text></view>
+    <view class="section-body">
+      <view class="item-row"><text class="dot">·</text><text class="item-text">本服务通过微信手机号授权方式进行身份验证，您授权后即完成登录</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">您应妥善保管账号信息，不得将账号授权给他人使用</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">若发现账号被盗用，请及时联系客服处理</text></view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">03</text><text>用户行为规范</text></view>
+    <view class="section-body">
+      <view class="item-row"><text class="dot">·</text><text class="item-text">您上传的文件及照片须为您合法拥有或已获授权的内容</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">禁止上传涉及违法、侵权、色情、暴力等内容</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">您不得利用本服务从事任何违法违规活动</text></view>
+      <view class="item-row warn-row"><text class="dot warn">!</text><text class="item-text">如违反上述规定，我们有权拒绝服务并追究相应责任</text></view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">04</text><text>支付与退款</text></view>
+    <view class="section-body">
+      <view class="item-row"><text class="dot">·</text><text class="item-text">本服务通过微信支付完成交易，支付完成后即视为订单确认</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">打印服务一经提交，文件处理完成后不支持退款</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">商城订单在发货前可申请取消退款，发货后请联系客服协商处理</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">如遇服务质量问题，可联系客服申请退款或补偿</text></view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">05</text><text>知识产权</text></view>
+    <view class="section-body">
+      <view class="item-row"><text class="dot">·</text><text class="item-text">本服务的界面设计、功能代码等知识产权均属于服务提供方</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">用户上传的内容，其知识产权归用户所有，我们不会将其用于商业用途</text></view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">06</text><text>免责声明</text></view>
+    <view class="section-body">
+      <view class="item-row"><text class="dot">·</text><text class="item-text">因不可抗力（网络故障、自然灾害等）导致服务中断，我们不承担责任</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">因您提供错误的收货地址或联系方式导致配送失败，责任由您自行承担</text></view>
+      <view class="item-row"><text class="dot">·</text><text class="item-text">因您上传的文件本身质量问题导致打印效果不佳，我们不承担责任</text></view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">07</text><text>协议修改</text></view>
+    <view class="section-body">
+      <text class="p">我们保留对本协议进行修改的权利。修订后的协议将在小程序内公示，继续使用本服务即视为同意修改后的协议。</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title"><text class="section-num">08</text><text>联系我们</text></view>
+    <view class="section-body">
+      <text class="p">如有任何疑问，请通过小程序内客服功能联系我们，我们将在 3 个工作日内回复。</text>
+    </view>
+  </view>
+
+  <view class="footer">
+    <text class="footer-text">— 打印小站 —</text>
+  </view>
+</scroll-view>

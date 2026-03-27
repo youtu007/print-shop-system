@@ -1,19 +1,46 @@
 <view class="page">
   <view class="title">📦 订单状态</view>
-  <view wx:if="{{order}}" class="card">
-    <text class="cname">{{order.customer_name}}</text>
-    <text class="addr">📍 {{order.address}}</text>
-    <view class="steps">
-      <view class="step {{order.delivery_status==='packing'||order.delivery_status==='shipping'||order.delivery_status==='delivered'?'active':''}}">
-        <text class="dot">📦</text><text class="slabel">配货中</text>
+
+  <view wx:if="{{loading}}" class="tip">加载中...</view>
+  <view wx:elif="{{error}}" class="tip error">{{error}}</view>
+
+  <view wx:elif="{{order}}">
+    <!-- 配送状态 -->
+    <view class="card">
+      <view class="steps">
+        <view class="step {{order.delivery_status==='packing'||order.delivery_status==='shipping'||order.delivery_status==='delivered'?'active':''}}">
+          <text class="dot">📦</text><text class="slabel">配货中</text>
+        </view>
+        <view class="step-line"></view>
+        <view class="step {{order.delivery_status==='shipping'||order.delivery_status==='delivered'?'active':''}}">
+          <text class="dot">🚚</text><text class="slabel">配送中</text>
+        </view>
+        <view class="step-line"></view>
+        <view class="step {{order.delivery_status==='delivered'?'active':''}}">
+          <text class="dot">✅</text><text class="slabel">已送达</text>
+        </view>
       </view>
-      <view class="step-line"></view>
-      <view class="step {{order.delivery_status==='shipping'||order.delivery_status==='delivered'?'active':''}}">
-        <text class="dot">🚚</text><text class="slabel">配送中</text>
+    </view>
+
+    <!-- 收货信息 -->
+    <view class="card" style="margin-top:16rpx">
+      <view class="section-title">收货信息</view>
+      <view class="info-row"><text class="info-label">姓名</text><text>{{order.customer_name}}</text></view>
+      <view class="info-row"><text class="info-label">手机</text><text>{{order.phone}}</text></view>
+      <view class="info-row"><text class="info-label">地址</text><text>{{order.address}}</text></view>
+    </view>
+
+    <!-- 商品明细 -->
+    <view class="card" style="margin-top:16rpx">
+      <view class="section-title">商品明细</view>
+      <view class="item-row" wx:for="{{order.items}}" wx:key="id">
+        <text class="item-name">{{item.name}}</text>
+        <text class="item-qty">×{{item.qty}}</text>
+        <text class="item-price">¥{{item.price}}</text>
       </view>
-      <view class="step-line"></view>
-      <view class="step {{order.delivery_status==='delivered'?'active':''}}">
-        <text class="dot">✅</text><text class="slabel">已送达</text>
+      <view class="total-row">
+        <text>合计</text>
+        <text class="total-price">¥{{order.total_price}}</text>
       </view>
     </view>
   </view>
